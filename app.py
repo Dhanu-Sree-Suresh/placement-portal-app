@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = "user"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    u_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False)
@@ -41,9 +41,9 @@ class User(db.Model):
 
 class Company(db.Model):
     __tablename__ = "company"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    c_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id"), unique=True, nullable=False
+        db.Integer, db.ForeignKey("user.u_id"), unique=True, nullable=False
     )
     name = db.Column(db.String(200), nullable=False)
     industry = db.Column(db.String(200))
@@ -58,9 +58,9 @@ class Company(db.Model):
 
 class Student(db.Model):
     __tablename__ = "student"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    s_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id"), unique=True, nullable=False
+        db.Integer, db.ForeignKey("user.u_id"), unique=True, nullable=False
     )
     name = db.Column(db.String(200), nullable=False)
     roll_number = db.Column(db.String(50), unique=True)
@@ -75,8 +75,8 @@ class Student(db.Model):
 
 class PlacementDrive(db.Model):
     __tablename__ = "placement_drive"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    company_id = db.Column(db.Integer, db.ForeignKey("company.id"), nullable=False)
+    p_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    company_id = db.Column(db.Integer, db.ForeignKey("company.c_id"), nullable=False)
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text)
     eligibility = db.Column(db.Text)
@@ -89,10 +89,10 @@ class PlacementDrive(db.Model):
 
 class Application(db.Model):
     __tablename__ = "application"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    student_id = db.Column(db.Integer, db.ForeignKey("student.id"), nullable=False)
+    a_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    student_id = db.Column(db.Integer, db.ForeignKey("student.s_id"), nullable=False)
     drive_id = db.Column(
-        db.Integer, db.ForeignKey("placement_drive.id"), nullable=False
+        db.Integer, db.ForeignKey("placement_drive.p_id"), nullable=False
     )
     status = db.Column(db.String(20), default="applied")
     applied_date = db.Column(db.DateTime, default=datetime.now)
