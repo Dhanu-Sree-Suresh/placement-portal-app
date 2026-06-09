@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #54B39A;
+            --secondary: #6092C1;
+            --accent: #D46087;
+            --tertiary: #8C7BB8;
+            --quaternary: #7FAFD4;
+            --success: #7FB8A4;
+            --warning: #E8A317;
+            --danger: #D97C6F;
+            --info: #6B8DAF;
+            --low: #7FB8A4;
+            --medium: #E8A317;
+            --high: #D97C6F;
+            --critical: #A30006;
+        }
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            border-color: var(--warning);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" v-if="token">
+            <div class="container">
+                <a class="navbar-brand" href="#">Placement Portal</a>
+                <div class="navbar-nav ms-auto">
+                    <span class="nav-item nav-link">Role: <strong>{{ role }}</strong></span>
+                    <button class="btn btn-sm btn-outline-danger ms-2" @click="logout">Logout</button>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <router-view></router-view>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const { createApp, ref, computed } = Vue;
+        const { createRouter, createWebHashHistory } = VueRouter;
+
+        axios.interceptors.request.use(config => {
+            const token = localStorage.getItem('token');
+            if (token) config.headers.Authorization = `Bearer ${token}`;
+            return config;
+        });
+
+        const Login = {
+            template: `
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="card p-4 shadow-sm">
+            <h3 class="text-center" style="color: var(--primary);">Login</h3>
+            <form @submit.prevent="doLogin">
+              <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <p class="mt-3 text-center">New student? <router-link to="/register/student">Register</router-link></p>
+            <p class="text-center">Company? <router-link to="/register/company">Register</router-link></p>
+          </div>
+        </div>
+      </div>`,
+            data() { return { email: '', password: '' }; },
+            methods: {
+                async doLogin() {
+                    try {
+                        const res = await axios.post('/api/login', { email: this.email, password: this.password });
+                        localStorage.setItem('token', res.data.access_token);
+                        localStorage.setItem('role', res.data.role);
+                        this.$router.push('/' + res.data.role);
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Login failed');
+                    }
+                }
+            }
+        };
+
+        const RegisterStudent = {
+            template: `
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4 shadow-sm">
+            <h3 style="color: var(--primary);">Student Registration</h3>
+            <form @submit.prevent="register">
+              <div class="mb-3"><input v-model="name" class="form-control" placeholder="Full Name" required></div>
+              <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <div class="mb-3"><input v-model="roll" class="form-control" placeholder="Roll Number"></div>
+              <div class="mb-3"><input v-model="branch" class="form-control" placeholder="Branch"></div>
+              <div class="mb-3"><input v-model="cgpa" class="form-control" placeholder="CGPA" type="number" step="0.1"></div>
+              <div class="mb-3"><input v-model="year" class="form-control" placeholder="Graduation Year" type="number"></div>
+              <button class="btn btn-primary w-100">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>`,
+            data() { return { name: '', email: '', password: '', roll: '', branch: '', cgpa: '', year: '' }; },
+            methods: {
+                async register() {
+                    try {
+                        await axios.post('/api/register/student', {
+                            name: this.name, email: this.email, password: this.password,
+                            roll_number: this.roll, branch: this.branch, cgpa: parseFloat(this.cgpa),
+                            year: parseInt(this.year)
+                        });
+                        alert('Registration successful. Please login.');
+                        this.$router.push('/');
+                    } catch (e) { alert(e.response?.data?.msg); }
+                }
+            }
+        };
+
+        const RegisterCompany = {
+            template: `
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4 shadow-sm">
+            <h3 style="color: var(--primary);">Company Registration</h3>
+            <form @submit.prevent="register">
+              <div class="mb-3"><input v-model="name" class="form-control" placeholder="Company Name" required></div>
+              <div class="mb-3"><input v-model="email" class="form-control" placeholder="HR Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <div class="mb-3"><input v-model="industry" class="form-control" placeholder="Industry"></div>
+              <div class="mb-3"><input v-model="location" class="form-control" placeholder="Location"></div>
+              <div class="mb-3"><textarea v-model="desc" class="form-control" placeholder="Description"></textarea></div>
+              <button class="btn btn-primary w-100">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>`,
+            data() { return { name: '', email: '', password: '', industry: '', location: '', desc: '' }; },
+            methods: {
+                async register() {
+                    try {
+                        await axios.post('/api/register/company', {
+                            name: this.name, email: this.email, password: this.password,
+                            industry: this.industry, location: this.location, description: this.desc
+                        });
+                        alert('Company registered. Await admin approval.');
+                        this.$router.push('/');
+                    } catch (e) { alert(e.response?.data?.msg); }
+                }
+            }
+        };
+
+        const AdminDashboard = { template: '<div><h2 style="color: var(--primary);">Admin Dashboard</h2><p>Welcome Admin!</p></div>' };
+        const CompanyDashboard = { template: '<div><h2 style="color: var(--secondary);">Company Dashboard</h2><p>Welcome Company!</p></div>' };
+        const StudentDashboard = { template: '<div><h2 style="color: var(--tertiary);">Student Dashboard</h2><p>Welcome Student!</p></div>' };
+
+        const routes = [
+            { path: '/', component: Login },
+            { path: '/register/student', component: RegisterStudent },
+            { path: '/register/company', component: RegisterCompany },
+            { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
+            { path: '/company', component: CompanyDashboard, meta: { role: 'company' } },
+            { path: '/student', component: StudentDashboard, meta: { role: 'student' } },
+        ];
+
+        const router = createRouter({ history: createWebHashHistory(), routes });
+
+        router.beforeEach((to, from, next) => {
+            const role = localStorage.getItem('role');
+            if (to.meta.role && role !== to.meta.role) {
+                next('/');
+            } else {
+                next();
+            }
+        });
+
+        const app = createApp({
+            data() {
+                return {
+                    token: localStorage.getItem('token'),
+                    role: localStorage.getItem('role') || ''
+                };
+            },
+            methods: {
+                logout() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('role');
+                    this.token = null;
+                    this.role = '';
+                    this.$router.push('/');
+                }
+            }
+        });
+
+        app.use(router);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
