@@ -21,10 +21,17 @@
             --medium: #E8A317;
             --high: #D97C6F;
             --critical: #A30006;
+            --text-dark-gray: #2c3e50;
+            --text-white: #ffffff;
+            --card-student: #d4e9e2;
+            --card-company: #d6e2f0;
+            --card-drive: #e3d7f5;
+            --card-pending: #fbe8c6;
         }
 
         body {
             background: #f8f9fa;
+            color: var(--text-dark-gray);
         }
 
         .navbar-brand {
@@ -37,14 +44,37 @@
             border-color: var(--primary);
         }
 
+        .btn-primary:hover {
+            background-color: #3e8b74;
+            border-color: #3e8b74;
+        }
+
+        .btn-primary:active,
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background-color: #2f6e5a !important;
+            border-color: #2f6e5a !important;
+            box-shadow: 0 0 0 0.2rem rgba(84, 179, 154, 0.3) !important;
+        }
+
         .btn-secondary {
             background-color: var(--secondary);
             border-color: var(--secondary);
         }
 
+        .btn-secondary:hover {
+            background-color: #4a75a0;
+            border-color: #4a75a0;
+        }
+
         .btn-success {
             background-color: var(--success);
             border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #5d8c7a;
+            border-color: #5d8c7a;
         }
 
         .btn-warning {
@@ -53,14 +83,176 @@
             color: #fff;
         }
 
+        .btn-warning:hover {
+            background-color: #c48e14;
+            border-color: #c48e14;
+            color: #fff;
+        }
+
         .btn-danger {
             background-color: var(--danger);
             border-color: var(--danger);
         }
 
+        .btn-danger:hover {
+            background-color: #b85d52;
+            border-color: #b85d52;
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-outline-success {
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-outline-success:hover {
+            background-color: var(--success);
+            color: #fff;
+        }
+
+        .btn-outline-info {
+            color: var(--info);
+            border-color: var(--info);
+        }
+
+        .btn-outline-info:hover {
+            background-color: var(--info);
+            color: #fff;
+        }
+
         .card {
             border: none;
             border-radius: 10px;
+        }
+
+        .table-responsive {
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .stat-card .card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-card h5 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark-gray);
+            font-weight: 700;
+        }
+
+        .stat-card h2 {
+            font-size: 2rem;
+            margin: 0;
+            font-weight: 700;
+            color: var(--text-dark-gray);
+        }
+
+        .card-students {
+            background-color: var(--card-student);
+        }
+
+        .card-companies {
+            background-color: var(--card-company);
+        }
+
+        .card-drives {
+            background-color: var(--card-drive);
+        }
+
+        .card-pending {
+            background-color: var(--card-pending);
+        }
+
+        .btn-company {
+            background-color: #7f9fc4;
+            border-color: #7f9fc4;
+            color: var(--text-white);
+        }
+
+        .btn-company:hover {
+            background-color: #6b8cb3;
+            border-color: #6b8cb3;
+            color: var(--text-dark-gray);
+        }
+
+        .btn-outline-company {
+            background-color: transparent;
+            color: #6b8cb3;
+            border-color: #6b8cb3;
+        }
+
+        .btn-outline-company:hover {
+            background-color: #7f9fc4;
+            color: var(--text-dark-gray);
+            border-color: #7f9fc4;
+        }
+
+        .btn-drive {
+            background-color: #a88bcf;
+            border-color: #a88bcf;
+            color: var(--text-white);
+        }
+
+        .btn-drive:hover {
+            background-color: #9575c1;
+            border-color: #9575c1;
+            color: var(--text-dark-gray);
+        }
+
+        .btn-outline-drive {
+            background-color: transparent;
+            color: #9575c1;
+            border-color: #9575c1;
+        }
+
+        .btn-outline-drive:hover {
+            background-color: #a88bcf;
+            color: var(--text-dark-gray);
+            border-color: #a88bcf;
+        }
+
+        .btn-student {
+            background-color: #84b39c;
+            border-color: #84b39c;
+            color: var(--text-white);
+        }
+
+        .btn-student:hover {
+            background-color: #709e87;
+            border-color: #709e87;
+            color: var(--text-dark-gray);
+        }
+
+        .btn-outline-student {
+            background-color: transparent;
+            color: #709e87;
+            border-color: #709e87;
+        }
+
+        .btn-outline-student:hover {
+            background-color: #84b39c;
+            color: var(--text-dark-gray);
+            border-color: #84b39c;
         }
     </style>
 </head>
@@ -71,8 +263,7 @@
             <div class="container">
                 <a class="navbar-brand" href="#">Placement Portal</a>
                 <div class="navbar-nav ms-auto">
-                    <span class="nav-item nav-link">Role: <strong>{{ role }}</strong></span>
-                    <button class="btn btn-sm btn-outline-danger ms-2" @click="logout">Logout</button>
+                    <button class="btn btn-sm btn-outline-danger" @click="logout">Logout</button>
                 </div>
             </div>
         </nav>
@@ -85,6 +276,7 @@
     <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        {% raw %}
         const { createApp, ref, computed } = Vue;
         const { createRouter, createWebHashHistory } = VueRouter;
 
@@ -193,7 +385,190 @@
             }
         };
 
-        const AdminDashboard = { template: '<div><h2 style="color: var(--primary);">Admin Dashboard</h2><p>Welcome Admin!</p></div>' };
+        const AdminDashboard = {
+            template: `
+        <div>
+          <h2 style="color: var(--primary);">Admin Dashboard</h2>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <div class="card stat-card card-students">
+                <div class="card-body">
+                  <h5>Students</h5>
+                  <h2>{{ stats.total_students }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card stat-card card-companies">
+                <div class="card-body">
+                  <h5>Companies</h5>
+                  <h2>{{ stats.total_companies }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card stat-card card-drives">
+                <div class="card-body">
+                  <h5>Drives</h5>
+                  <h2>{{ stats.total_drives }}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="card stat-card card-pending">
+                <div class="card-body">
+                  <h5>Pending</h5>
+                  <p style="margin:0; color: var(--text-dark-gray);">Companies: {{ stats.pending_companies }}<br>
+                    Drives: {{ stats.pending_drives }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 mb-3">
+            <button class="btn me-2" :class="view==='companies' ? 'btn-company' : 'btn-outline-company'" @click="view='companies'">Companies</button>
+            <button class="btn me-2" :class="view==='drives' ? 'btn-drive' : 'btn-outline-drive'" @click="view='drives'">Drives</button>
+            <button class="btn" :class="view==='students' ? 'btn-student' : 'btn-outline-student'" @click="view='students'">Students</button>
+          </div>
+
+          <div v-if="view==='companies'">
+            <h4>Companies</h4>
+            <input v-model="companySearch" class="form-control mb-2" placeholder="Search companies by name">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Name</th><th>Email</th><th>Approved</th><th>Active</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr v-for="c in filteredCompanies" :key="c.c_id">
+                    <td>{{ c.name }}</td><td>{{ c.email }}</td>
+                    <td><span :class="c.approved ? 'text-success' : 'text-danger'">{{ c.approved ? 'Yes' : 'No' }}</span></td>
+                    <td>{{ c.active ? 'Active' : 'Deactivated' }}</td>
+                    <td>
+                      <button v-if="!c.approved" class="btn btn-sm btn-success me-1" @click="approveCompany(c.c_id)">Approve</button>
+                      <button class="btn btn-sm btn-warning me-1" @click="toggleCompanyActive(c.c_id)">{{ c.active ? 'Deactivate' : 'Activate' }}</button>
+                      <button v-if="!c.approved" class="btn btn-sm btn-danger" @click="rejectCompany(c.c_id)">Reject</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div v-if="view==='drives'">
+            <h4>Placement Drives</h4>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Title</th><th>Company</th><th>Status</th><th>Deadline</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr v-for="d in drives" :key="d.p_id">
+                    <td>{{ d.title }}</td><td>{{ d.company_name }}</td><td>{{ d.status }}</td>
+                    <td>{{ d.deadline || 'N/A' }}</td>
+                    <td>
+                      <button v-if="d.status === 'pending'" class="btn btn-sm btn-success me-1" @click="approveDrive(d.p_id)">Approve</button>
+                      <button v-if="d.status === 'approved'" class="btn btn-sm btn-secondary" @click="closeDrive(d.p_id)">Close</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div v-if="view==='students'">
+            <h4>Students</h4>
+            <input v-model="studentSearch" class="form-control mb-2" placeholder="Search students by name or roll">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Name</th><th>Roll No</th><th>Email</th><th>Active</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr v-for="s in filteredStudents" :key="s.s_id">
+                    <td>{{ s.name }}</td><td>{{ s.roll_number }}</td><td>{{ s.email }}</td>
+                    <td>{{ s.active ? 'Active' : 'Deactivated' }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning" @click="toggleStudentActive(s.s_id)">{{ s.active ? 'Deactivate' : 'Activate' }}</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>`,
+            data() {
+                return {
+                    stats: { total_students: 0, total_companies: 0, total_drives: 0, pending_companies: 0, pending_drives: 0 },
+                    companies: [], drives: [], students: [],
+                    view: 'companies',
+                    companySearch: '',
+                    studentSearch: ''
+                };
+            },
+            computed: {
+                filteredCompanies() {
+                    return this.companies.filter(c =>
+                        c.name.toLowerCase().includes(this.companySearch.toLowerCase())
+                    );
+                },
+                filteredStudents() {
+                    return this.students.filter(s =>
+                        s.name.toLowerCase().includes(this.studentSearch.toLowerCase()) ||
+                        s.roll_number.toLowerCase().includes(this.studentSearch.toLowerCase())
+                    );
+                }
+            },
+            async mounted() {
+                await this.fetchStats();
+                this.fetchCompanies();
+                this.fetchDrives();
+                this.fetchStudents();
+            },
+            methods: {
+                async fetchStats() {
+                    const { data } = await axios.get('/api/admin/dashboard');
+                    this.stats = data;
+                },
+                async fetchCompanies() {
+                    const { data } = await axios.get('/api/admin/companies');
+                    this.companies = data;
+                },
+                async fetchDrives() {
+                    const { data } = await axios.get('/api/admin/drives');
+                    this.drives = data;
+                },
+                async fetchStudents() {
+                    const { data } = await axios.get('/api/admin/students');
+                    this.students = data;
+                },
+                async approveCompany(id) {
+                    await axios.put(`/api/admin/companies/${id}/approve`);
+                    this.fetchCompanies();
+                    this.fetchStats();
+                },
+                async rejectCompany(id) {
+                    if (confirm('Are you sure you want to reject this company?')) {
+                        await axios.delete(`/api/admin/companies/${id}/reject`);
+                        this.fetchCompanies();
+                        this.fetchStats();
+                    }
+                },
+                async toggleCompanyActive(id) {
+                    await axios.put(`/api/admin/companies/${id}/toggle-active`);
+                    this.fetchCompanies();
+                },
+                async approveDrive(id) {
+                    await axios.put(`/api/admin/drives/${id}/approve`);
+                    this.fetchDrives();
+                    this.fetchStats();
+                },
+                async closeDrive(id) {
+                    await axios.put(`/api/admin/drives/${id}/close`);
+                    this.fetchDrives();
+                },
+                async toggleStudentActive(id) {
+                    await axios.put(`/api/admin/students/${id}/toggle-active`);
+                    this.fetchStudents();
+                    this.fetchStats();
+                }
+            }
+        };
+
         const CompanyDashboard = { template: '<div><h2 style="color: var(--secondary);">Company Dashboard</h2><p>Welcome Company!</p></div>' };
         const StudentDashboard = { template: '<div><h2 style="color: var(--tertiary);">Student Dashboard</h2><p>Welcome Student!</p></div>' };
 
@@ -237,6 +612,7 @@
 
         app.use(router);
         app.mount('#app');
+        {% endraw %}
     </script>
 </body>
 
