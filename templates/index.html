@@ -34,9 +34,58 @@
             color: var(--text-dark-gray);
         }
 
+        .navbar-admin {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .navbar-admin .navbar-brand {
+            color: var(--primary) !important;
+            font-weight: 700;
+        }
+
+        .navbar-company {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .navbar-company .navbar-brand {
+            color: var(--secondary) !important;
+            font-weight: 700;
+        }
+
+        .navbar-student {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid var(--tertiary);
+        }
+
+        .navbar-student .navbar-brand {
+            color: var(--tertiary) !important;
+            font-weight: 700;
+        }
+
+        .navbar-guest {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .navbar-guest .navbar-brand {
+            color: var(--accent) !important;
+            font-weight: 700;
+        }
+
+        .navbar-guest .btn-outline-danger {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .navbar-guest .btn-outline-danger:hover {
+            background-color: var(--accent);
+            color: #fff;
+        }
+
         .navbar-brand {
             font-weight: bold;
-            color: var(--primary) !important;
         }
 
         .btn-primary {
@@ -55,6 +104,25 @@
             background-color: #2f6e5a !important;
             border-color: #2f6e5a !important;
             box-shadow: 0 0 0 0.2rem rgba(84, 179, 154, 0.3) !important;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn-accent:hover {
+            background-color: #b84a6e;
+            border-color: #b84a6e;
+            color: #fff;
+        }
+
+        .btn-accent:active,
+        .btn-accent:focus {
+            background-color: #9b3e5c !important;
+            border-color: #9b3e5c !important;
+            box-shadow: 0 0 0 0.2rem rgba(212, 96, 135, 0.3) !important;
         }
 
         .btn-secondary {
@@ -99,6 +167,19 @@
             border-color: #b85d52;
         }
 
+        .btn-outline-primary,
+        .btn-outline-secondary,
+        .btn-outline-success,
+        .btn-outline-danger,
+        .btn-outline-warning,
+        .btn-outline-info,
+        .btn-outline-company,
+        .btn-outline-drive,
+        .btn-outline-student {
+            background-color: transparent;
+            transition: all 0.15s ease-in-out;
+        }
+
         .btn-outline-primary {
             color: var(--primary);
             border-color: var(--primary);
@@ -106,7 +187,17 @@
 
         .btn-outline-primary:hover {
             background-color: var(--primary);
-            color: #fff;
+            color: var(--text-dark-gray);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary:active,
+        .btn-outline-primary.active,
+        .btn-outline-primary.selected,
+        .btn-outline-primary:focus-visible {
+            background-color: var(--primary) !important;
+            color: #fff !important;
+            border-color: var(--primary) !important;
         }
 
         .btn-outline-success {
@@ -116,7 +207,16 @@
 
         .btn-outline-success:hover {
             background-color: var(--success);
-            color: #fff;
+            color: var(--text-dark-gray);
+            border-color: var(--success);
+        }
+
+        .btn-outline-success:active,
+        .btn-outline-success.active,
+        .btn-outline-success.selected {
+            background-color: var(--success) !important;
+            color: #fff !important;
+            border-color: var(--success) !important;
         }
 
         .btn-outline-info {
@@ -126,7 +226,128 @@
 
         .btn-outline-info:hover {
             background-color: var(--info);
-            color: #fff;
+            color: var(--text-dark-gray);
+            border-color: var(--info);
+        }
+
+        .btn-outline-info:active,
+        .btn-outline-info.active,
+        .btn-outline-info.selected {
+            background-color: var(--info) !important;
+            color: #fff !important;
+            border-color: var(--info) !important;
+        }
+
+        .btn-outline-company {
+            background-color: transparent;
+            color: #6b8cb3;
+            border-color: #6b8cb3;
+        }
+
+        .btn-outline-company:hover {
+            background-color: #7f9fc4;
+            color: var(--text-dark-gray);
+            border-color: #7f9fc4;
+        }
+
+        .btn-outline-company.active,
+        .btn-outline-company.selected {
+            background-color: #7f9fc4 !important;
+            color: #fff !important;
+            border-color: #7f9fc4 !important;
+        }
+
+        .btn-outline-drive {
+            background-color: transparent;
+            color: #9575c1;
+            border-color: #9575c1;
+        }
+
+        .btn-outline-drive:hover {
+            background-color: #a88bcf;
+            color: var(--text-dark-gray);
+            border-color: #a88bcf;
+        }
+
+        .btn-outline-drive.active,
+        .btn-outline-drive.selected {
+            background-color: #a88bcf !important;
+            color: #fff !important;
+            border-color: #a88bcf !important;
+        }
+
+        .btn-outline-student {
+            background-color: transparent;
+            color: #709e87;
+            border-color: #709e87;
+        }
+
+        .btn-outline-student:hover {
+            background-color: #84b39c;
+            color: var(--text-dark-gray);
+            border-color: #84b39c;
+        }
+
+        .btn-outline-student.active,
+        .btn-outline-student.selected {
+            background-color: #84b39c !important;
+            color: #fff !important;
+            border-color: #84b39c !important;
+        }
+
+        .btn-outline-danger {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--danger);
+            color: var(--text-dark-gray);
+            border-color: var(--danger);
+        }
+
+        .btn-outline-danger:active,
+        .btn-outline-danger.active,
+        .btn-outline-danger.selected {
+            background-color: var(--danger) !important;
+            color: #fff !important;
+            border-color: var(--danger) !important;
+        }
+
+        .btn-company {
+            background-color: #7f9fc4;
+            border-color: #7f9fc4;
+            color: var(--text-white);
+        }
+
+        .btn-company:hover {
+            background-color: #6b8cb3;
+            border-color: #6b8cb3;
+            color: var(--text-dark-gray);
+        }
+
+        .btn-drive {
+            background-color: #a88bcf;
+            border-color: #a88bcf;
+            color: var(--text-white);
+        }
+
+        .btn-drive:hover {
+            background-color: #9575c1;
+            border-color: #9575c1;
+            color: var(--text-dark-gray);
+        }
+
+        .btn-student {
+            background-color: #84b39c;
+            border-color: #84b39c;
+            color: var(--text-white);
+        }
+
+        .btn-student:hover {
+            background-color: #709e87;
+            border-color: #709e87;
+            color: var(--text-dark-gray);
         }
 
         .card {
@@ -182,88 +403,16 @@
         .card-pending {
             background-color: var(--card-pending);
         }
-
-        .btn-company {
-            background-color: #7f9fc4;
-            border-color: #7f9fc4;
-            color: var(--text-white);
-        }
-
-        .btn-company:hover {
-            background-color: #6b8cb3;
-            border-color: #6b8cb3;
-            color: var(--text-dark-gray);
-        }
-
-        .btn-outline-company {
-            background-color: transparent;
-            color: #6b8cb3;
-            border-color: #6b8cb3;
-        }
-
-        .btn-outline-company:hover {
-            background-color: #7f9fc4;
-            color: var(--text-dark-gray);
-            border-color: #7f9fc4;
-        }
-
-        .btn-drive {
-            background-color: #a88bcf;
-            border-color: #a88bcf;
-            color: var(--text-white);
-        }
-
-        .btn-drive:hover {
-            background-color: #9575c1;
-            border-color: #9575c1;
-            color: var(--text-dark-gray);
-        }
-
-        .btn-outline-drive {
-            background-color: transparent;
-            color: #9575c1;
-            border-color: #9575c1;
-        }
-
-        .btn-outline-drive:hover {
-            background-color: #a88bcf;
-            color: var(--text-dark-gray);
-            border-color: #a88bcf;
-        }
-
-        .btn-student {
-            background-color: #84b39c;
-            border-color: #84b39c;
-            color: var(--text-white);
-        }
-
-        .btn-student:hover {
-            background-color: #709e87;
-            border-color: #709e87;
-            color: var(--text-dark-gray);
-        }
-
-        .btn-outline-student {
-            background-color: transparent;
-            color: #709e87;
-            border-color: #709e87;
-        }
-
-        .btn-outline-student:hover {
-            background-color: #84b39c;
-            color: var(--text-dark-gray);
-            border-color: #84b39c;
-        }
     </style>
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" v-if="token">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm" :class="navbarClass" v-if="true">
             <div class="container">
                 <a class="navbar-brand" href="#">Placement Portal</a>
                 <div class="navbar-nav ms-auto">
-                    <button class="btn btn-sm btn-outline-danger" @click="logout">Logout</button>
+                    <button v-if="token" class="btn btn-sm btn-outline-danger" @click="logout">Logout</button>
                 </div>
             </div>
         </nav>
@@ -291,11 +440,11 @@
       <div class="row justify-content-center">
         <div class="col-md-4">
           <div class="card p-4 shadow-sm">
-            <h3 class="text-center" style="color: var(--primary);">Login</h3>
+            <h3 class="text-center" style="color: var(--accent);">Login</h3>
             <form @submit.prevent="doLogin">
               <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
               <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
-              <button type="submit" class="btn btn-primary w-100">Login</button>
+              <button type="submit" class="btn btn-accent w-100">Login</button>
             </form>
             <p class="mt-3 text-center">New student? <router-link to="/register/student">Register</router-link></p>
             <p class="text-center">Company? <router-link to="/register/company">Register</router-link></p>
@@ -309,6 +458,7 @@
                         const res = await axios.post('/api/login', { email: this.email, password: this.password });
                         localStorage.setItem('token', res.data.access_token);
                         localStorage.setItem('role', res.data.role);
+                        this.$root.updateAuth();
                         this.$router.push('/' + res.data.role);
                     } catch (e) {
                         alert(e.response?.data?.msg || 'Login failed');
@@ -322,7 +472,7 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card p-4 shadow-sm">
-            <h3 style="color: var(--primary);">Student Registration</h3>
+            <h3 style="color: var(--accent);">Student Registration</h3>
             <form @submit.prevent="register">
               <div class="mb-3"><input v-model="name" class="form-control" placeholder="Full Name" required></div>
               <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
@@ -331,8 +481,9 @@
               <div class="mb-3"><input v-model="branch" class="form-control" placeholder="Branch"></div>
               <div class="mb-3"><input v-model="cgpa" class="form-control" placeholder="CGPA" type="number" step="0.1"></div>
               <div class="mb-3"><input v-model="year" class="form-control" placeholder="Graduation Year" type="number"></div>
-              <button class="btn btn-primary w-100">Register</button>
+              <button class="btn btn-accent w-100">Register</button>
             </form>
+            <p class="mt-3 text-center">Already have an account? <router-link to="/">Login</router-link></p>
           </div>
         </div>
       </div>`,
@@ -357,7 +508,7 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card p-4 shadow-sm">
-            <h3 style="color: var(--primary);">Company Registration</h3>
+            <h3 style="color: var(--accent);">Company Registration</h3>
             <form @submit.prevent="register">
               <div class="mb-3"><input v-model="name" class="form-control" placeholder="Company Name" required></div>
               <div class="mb-3"><input v-model="email" class="form-control" placeholder="HR Email" required></div>
@@ -365,8 +516,9 @@
               <div class="mb-3"><input v-model="industry" class="form-control" placeholder="Industry"></div>
               <div class="mb-3"><input v-model="location" class="form-control" placeholder="Location"></div>
               <div class="mb-3"><textarea v-model="desc" class="form-control" placeholder="Description"></textarea></div>
-              <button class="btn btn-primary w-100">Register</button>
+              <button class="btn btn-accent w-100">Register</button>
             </form>
+            <p class="mt-3 text-center">Already have an account? <router-link to="/">Login</router-link></p>
           </div>
         </div>
       </div>`,
@@ -433,16 +585,34 @@
 
           <div v-if="view==='companies'">
             <h4>Companies</h4>
-            <input v-model="companySearch" class="form-control mb-2" placeholder="Search companies by name">
+            <div class="row mb-2">
+              <div class="col-md-4">
+                <input v-model="companySearch" class="form-control" placeholder="Search companies by name">
+              </div>
+              <div class="col-md-4">
+                <select v-model="companyFilter" class="form-select">
+                  <option value="all">All</option>
+                  <option value="approved">Approved</option>
+                  <option value="unapproved">Unapproved</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Deactivated</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-sm btn-outline-info" @click="resetCompanyFilters">Reset</button>
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead><tr><th>Name</th><th>Email</th><th>Approved</th><th>Active</th><th>Actions</th></tr></thead>
                 <tbody>
                   <tr v-for="c in filteredCompanies" :key="c.c_id">
-                    <td>{{ c.name }}</td><td>{{ c.email }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.email }}</td>
                     <td><span :class="c.approved ? 'text-success' : 'text-danger'">{{ c.approved ? 'Yes' : 'No' }}</span></td>
                     <td>{{ c.active ? 'Active' : 'Deactivated' }}</td>
                     <td>
+                      <button class="btn btn-sm btn-outline-info me-1" @click="viewCompanyDetails(c.c_id)">View Details</button>
                       <button v-if="!c.approved" class="btn btn-sm btn-success me-1" @click="approveCompany(c.c_id)">Approve</button>
                       <button class="btn btn-sm btn-warning me-1" @click="toggleCompanyActive(c.c_id)">{{ c.active ? 'Deactivate' : 'Activate' }}</button>
                       <button v-if="!c.approved" class="btn btn-sm btn-danger" @click="rejectCompany(c.c_id)">Reject</button>
@@ -451,18 +621,78 @@
                 </tbody>
               </table>
             </div>
+            <div v-if="selectedCompany" class="card p-3 mt-3">
+              <h5>Company Details</h5>
+              <p><strong>Name:</strong> {{ selectedCompany.name }}</p>
+              <p><strong>Email:</strong> {{ selectedCompany.email }}</p>
+              <p><strong>Industry:</strong> {{ selectedCompany.industry }}</p>
+              <p><strong>Location:</strong> {{ selectedCompany.location }}</p>
+              <p><strong>Description:</strong> {{ selectedCompany.description }}</p>
+              <h6>Drives</h6>
+              <div v-if="companyDrives.length === 0" class="text-muted">No drives.</div>
+              <div v-else class="table-responsive">
+                <table class="table table-sm">
+                  <thead><tr><th>Title</th><th>Status</th><th>Deadline</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    <tr v-for="d in companyDrives" :key="d.p_id">
+                      <td>{{ d.title }}</td>
+                      <td>{{ capitalize(d.status) }}</td>
+                      <td>{{ d.deadline || 'N/A' }}</td>
+                      <td>
+                        <button :class="['btn btn-sm btn-outline-info', { selected: selectedDriveId === d.p_id }]" @click="viewDriveApplications(d.p_id)">View Applicants</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div v-if="selectedDriveApplicants.length > 0" class="mt-2">
+                <h6>Applicants for Drive {{ selectedDriveId }}</h6>
+                <table class="table table-sm">
+                  <thead><tr><th>Name</th><th>Roll No</th><th>Branch</th><th>CGPA</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr v-for="a in selectedDriveApplicants" :key="a.a_id">
+                      <td>{{ a.student_name }}</td>
+                      <td>{{ a.roll_number }}</td>
+                      <td>{{ a.branch }}</td>
+                      <td>{{ a.cgpa }}</td>
+                      <td>{{ capitalize(a.status) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-2" @click="selectedCompany = null; companyDrives = []; selectedDriveApplicants = []; selectedDriveId = null">Close</button>
+            </div>
           </div>
 
           <div v-if="view==='drives'">
             <h4>Placement Drives</h4>
+            <div class="row mb-2">
+              <div class="col-md-4">
+                <input v-model="driveSearch" class="form-control" placeholder="Search by title or company">
+              </div>
+              <div class="col-md-4">
+                <select v-model="driveFilter" class="form-select">
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-sm btn-outline-info" @click="resetDriveFilters">Reset</button>
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead><tr><th>Title</th><th>Company</th><th>Status</th><th>Deadline</th><th>Actions</th></tr></thead>
                 <tbody>
                   <tr v-for="d in drives" :key="d.p_id">
-                    <td>{{ d.title }}</td><td>{{ d.company_name }}</td><td>{{ d.status }}</td>
+                    <td>{{ d.title }}</td>
+                    <td>{{ d.company_name }}</td>
+                    <td>{{ capitalize(d.status) }}</td>
                     <td>{{ d.deadline || 'N/A' }}</td>
                     <td>
+                      <button class="btn btn-sm btn-outline-info me-1" @click="viewDriveDetail(d.p_id)">View Details</button>
                       <button v-if="d.status === 'pending'" class="btn btn-sm btn-success me-1" @click="approveDrive(d.p_id)">Approve</button>
                       <button v-if="d.status === 'approved'" class="btn btn-sm btn-secondary" @click="closeDrive(d.p_id)">Close</button>
                     </td>
@@ -470,24 +700,95 @@
                 </tbody>
               </table>
             </div>
+            <div v-if="selectedDriveDetail" class="card p-3 mt-3">
+              <h5>Drive Details</h5>
+              <p><strong>Title:</strong> {{ selectedDriveDetail.title }}</p>
+              <p><strong>Company:</strong> {{ selectedDriveDetail.company_name }}</p>
+              <p><strong>Status:</strong> {{ capitalize(selectedDriveDetail.status) }}</p>
+              <p><strong>Deadline:</strong> {{ selectedDriveDetail.deadline || 'N/A' }}</p>
+              <p><strong>Description:</strong> {{ selectedDriveDetail.description }}</p>
+              <p><strong>Branch:</strong> {{ selectedDriveDetail.branch }}</p>
+              <p><strong>CGPA Min:</strong> {{ selectedDriveDetail.cgpa_min }}</p>
+              <p><strong>Year:</strong> {{ selectedDriveDetail.year }}</p>
+              <h6>Applicants</h6>
+              <div v-if="selectedDriveApplications.length === 0" class="text-muted">No applicants.</div>
+              <div v-else class="table-responsive">
+                <table class="table table-sm">
+                  <thead><tr><th>Name</th><th>Roll No</th><th>Branch</th><th>CGPA</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr v-for="a in selectedDriveApplications" :key="a.a_id">
+                      <td>{{ a.student_name }}</td>
+                      <td>{{ a.roll_number }}</td>
+                      <td>{{ a.branch }}</td>
+                      <td>{{ a.cgpa }}</td>
+                      <td>{{ capitalize(a.status) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-2" @click="selectedDriveDetail = null; selectedDriveApplications = []">Close</button>
+            </div>
           </div>
 
           <div v-if="view==='students'">
             <h4>Students</h4>
-            <input v-model="studentSearch" class="form-control mb-2" placeholder="Search students by name or roll">
+            <div class="row mb-2">
+              <div class="col-md-4">
+                <input v-model="studentSearch" class="form-control" placeholder="Search by name or roll">
+              </div>
+              <div class="col-md-4">
+                <select v-model="studentFilter" class="form-select">
+                  <option value="all">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Deactivated</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-sm btn-outline-info" @click="resetStudentFilters">Reset</button>
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead><tr><th>Name</th><th>Roll No</th><th>Email</th><th>Active</th><th>Actions</th></tr></thead>
                 <tbody>
                   <tr v-for="s in filteredStudents" :key="s.s_id">
-                    <td>{{ s.name }}</td><td>{{ s.roll_number }}</td><td>{{ s.email }}</td>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.roll_number }}</td>
+                    <td>{{ s.email }}</td>
                     <td>{{ s.active ? 'Active' : 'Deactivated' }}</td>
                     <td>
+                      <button class="btn btn-sm btn-outline-info me-1" @click="viewStudentDetails(s.s_id)">View Details</button>
                       <button class="btn btn-sm btn-warning" @click="toggleStudentActive(s.s_id)">{{ s.active ? 'Deactivate' : 'Activate' }}</button>
                     </td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div v-if="selectedStudent" class="card p-3 mt-3">
+              <h5>Student Details</h5>
+              <p><strong>Name:</strong> {{ selectedStudent.name }}</p>
+              <p><strong>Roll No:</strong> {{ selectedStudent.roll_number }}</p>
+              <p><strong>Email:</strong> {{ selectedStudent.email }}</p>
+              <p><strong>Branch:</strong> {{ selectedStudent.branch }}</p>
+              <p><strong>CGPA:</strong> {{ selectedStudent.cgpa }}</p>
+              <p><strong>Year:</strong> {{ selectedStudent.year }}</p>
+              <p><strong>Skills:</strong> {{ selectedStudent.skills }}</p>
+              <h6>Applications</h6>
+              <div v-if="studentApplications.length === 0" class="text-muted">No applications.</div>
+              <div v-else class="table-responsive">
+                <table class="table table-sm">
+                  <thead><tr><th>Company</th><th>Drive Title</th><th>Status</th><th>Date</th></tr></thead>
+                  <tbody>
+                    <tr v-for="a in studentApplications" :key="a.a_id">
+                      <td>{{ a.company_name }}</td>
+                      <td>{{ a.drive_title }}</td>
+                      <td>{{ capitalize(a.status) }}</td>
+                      <td>{{ a.applied_date }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm btn-secondary mt-2" @click="selectedStudent = null; studentApplications = []">Close</button>
             </div>
           </div>
         </div>`,
@@ -496,22 +797,46 @@
                     stats: { total_students: 0, total_companies: 0, total_drives: 0, pending_companies: 0, pending_drives: 0 },
                     companies: [], drives: [], students: [],
                     view: 'companies',
-                    companySearch: '',
-                    studentSearch: ''
+                    companySearch: '', companyFilter: 'all',
+                    driveSearch: '', driveFilter: 'all',
+                    studentSearch: '', studentFilter: 'all',
+                    selectedCompany: null,
+                    companyDrives: [],
+                    selectedDriveId: null,
+                    selectedDriveApplicants: [],
+                    selectedDriveDetail: null,
+                    selectedDriveApplications: [],
+                    selectedStudent: null,
+                    studentApplications: []
                 };
             },
             computed: {
                 filteredCompanies() {
-                    return this.companies.filter(c =>
-                        c.name.toLowerCase().includes(this.companySearch.toLowerCase())
-                    );
+                    let result = this.companies;
+                    if (this.companySearch) {
+                        result = result.filter(c =>
+                            c.name.toLowerCase().includes(this.companySearch.toLowerCase())
+                        );
+                    }
+                    return result;
                 },
                 filteredStudents() {
-                    return this.students.filter(s =>
-                        s.name.toLowerCase().includes(this.studentSearch.toLowerCase()) ||
-                        s.roll_number.toLowerCase().includes(this.studentSearch.toLowerCase())
-                    );
+                    let result = this.students;
+                    if (this.studentSearch) {
+                        result = result.filter(s =>
+                            s.name.toLowerCase().includes(this.studentSearch.toLowerCase()) ||
+                            s.roll_number.toLowerCase().includes(this.studentSearch.toLowerCase())
+                        );
+                    }
+                    return result;
                 }
+            },
+            watch: {
+                companyFilter() { this.fetchCompanies(); },
+                driveFilter() { this.fetchDrives(); },
+                driveSearch() { this.fetchDrives(); },
+                studentFilter() { this.fetchStudents(); },
+                studentSearch() { this.fetchStudents(); }
             },
             async mounted() {
                 await this.fetchStats();
@@ -520,20 +845,30 @@
                 this.fetchStudents();
             },
             methods: {
+                capitalize(str) {
+                    if (!str) return '';
+                    return str.charAt(0).toUpperCase() + str.slice(1);
+                },
                 async fetchStats() {
                     const { data } = await axios.get('/api/admin/dashboard');
                     this.stats = data;
                 },
                 async fetchCompanies() {
-                    const { data } = await axios.get('/api/admin/companies');
+                    const params = { filter: this.companyFilter };
+                    if (this.companySearch) params.q = this.companySearch;
+                    const { data } = await axios.get('/api/admin/companies', { params });
                     this.companies = data;
                 },
                 async fetchDrives() {
-                    const { data } = await axios.get('/api/admin/drives');
+                    const params = { filter: this.driveFilter };
+                    if (this.driveSearch) params.q = this.driveSearch;
+                    const { data } = await axios.get('/api/admin/drives', { params });
                     this.drives = data;
                 },
                 async fetchStudents() {
-                    const { data } = await axios.get('/api/admin/students');
+                    const params = { filter: this.studentFilter };
+                    if (this.studentSearch) params.q = this.studentSearch;
+                    const { data } = await axios.get('/api/admin/students', { params });
                     this.students = data;
                 },
                 async approveCompany(id) {
@@ -565,11 +900,287 @@
                     await axios.put(`/api/admin/students/${id}/toggle-active`);
                     this.fetchStudents();
                     this.fetchStats();
+                },
+                async viewCompanyDetails(companyId) {
+                    const { data } = await axios.get(`/api/admin/companies/${companyId}`);
+                    this.selectedCompany = data;
+                    const drivesRes = await axios.get(`/api/admin/companies/${companyId}/drives`);
+                    this.companyDrives = drivesRes.data;
+                    this.selectedDriveApplicants = [];
+                    this.selectedDriveId = null;
+                },
+                async viewDriveApplications(driveId) {
+                    this.selectedDriveId = driveId;
+                    const { data } = await axios.get(`/api/admin/drives/${driveId}/applications`);
+                    this.selectedDriveApplicants = data;
+                },
+                async viewDriveDetail(driveId) {
+                    const { data } = await axios.get(`/api/admin/drives/${driveId}`);
+                    this.selectedDriveDetail = data;
+                    const appsRes = await axios.get(`/api/admin/drives/${driveId}/applications`);
+                    this.selectedDriveApplications = appsRes.data;
+                },
+                async viewStudentDetails(studentId) {
+                    const { data } = await axios.get(`/api/admin/students/${studentId}`);
+                    this.selectedStudent = data;
+                    const appsRes = await axios.get(`/api/admin/students/${studentId}/applications`);
+                    this.studentApplications = appsRes.data;
+                },
+                resetCompanyFilters() {
+                    this.companySearch = '';
+                    this.companyFilter = 'all';
+                },
+                resetDriveFilters() {
+                    this.driveSearch = '';
+                    this.driveFilter = 'all';
+                },
+                resetStudentFilters() {
+                    this.studentSearch = '';
+                    this.studentFilter = 'all';
                 }
             }
         };
 
-        const CompanyDashboard = { template: '<div><h2 style="color: var(--secondary);">Company Dashboard</h2><p>Welcome Company!</p></div>' };
+        const CompanyDashboard = {
+            template: `
+        <div>
+          <h2 style="color: var(--secondary);">{{ companyName }}</h2>
+          <div v-if="!approved" class="alert alert-warning">Your company registration is pending approval. You will be able to create drives after approval.</div>
+          <div v-else>
+            <div class="row mb-3">
+              <div class="col">
+                <h4>Your Placement Drives</h4>
+              </div>
+              <div class="col text-end">
+                <button class="btn btn-primary" @click="showCreate = !showCreate">{{ showCreate ? 'Cancel' : 'Create New Drive' }}</button>
+              </div>
+            </div>
+            <div v-if="showCreate" class="card p-3 mb-3">
+              <h5>Create Placement Drive</h5>
+              <form @submit.prevent="createDrive">
+                <div class="mb-3"><input v-model="newDrive.title" class="form-control" placeholder="Job Title" required></div>
+                <div class="mb-3"><textarea v-model="newDrive.description" class="form-control" placeholder="Job Description"></textarea></div>
+                <div class="row">
+                  <div class="col-md-4"><input v-model="newDrive.branch" class="form-control" placeholder="Eligible Branches (comma separated, e.g. CS,EE)"></div>
+                  <div class="col-md-4"><input v-model="newDrive.cgpa_min" type="number" step="0.1" class="form-control" placeholder="Minimum CGPA"></div>
+                  <div class="col-md-4"><input v-model="newDrive.year" class="form-control" placeholder="Eligible Years (comma separated, e.g. 2024,2025)"></div>
+                </div>
+                <div class="mt-3"><input v-model="newDrive.deadline" type="datetime-local" class="form-control"></div>
+                <button type="submit" class="btn btn-success mt-2">Create Drive</button>
+              </form>
+            </div>
+
+            <h5 class="mt-4">Active Drives</h5>
+            <div v-if="activeDrives.length === 0" class="text-muted">No active drives.</div>
+            <div v-else class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Title</th><th>Deadline</th><th>Applicants</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr v-for="d in activeDrives" :key="d.p_id">
+                    <td>{{ d.title }}</td>
+                    <td>{{ d.deadline || 'N/A' }}</td>
+                    <td>{{ d.applicants }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-info me-1" @click="viewApplicants(d)">View Applicants</button>
+                      <button class="btn btn-sm btn-primary me-1" @click="editDrive(d)">Edit</button>
+                      <button class="btn btn-sm btn-warning me-1" @click="toggleDriveStatus(d.p_id)">Close Drive</button>
+                      <button class="btn btn-sm btn-danger" @click="deleteDrive(d.p_id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="mt-4">Closed Drives</h5>
+            <div v-if="closedDrives.length === 0" class="text-muted">No closed drives.</div>
+            <div v-else class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Title</th><th>Deadline</th><th>Applicants</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr v-for="d in closedDrives" :key="d.p_id">
+                    <td>{{ d.title }}</td>
+                    <td>{{ d.deadline || 'N/A' }}</td>
+                    <td>{{ d.applicants }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-info me-1" @click="viewApplicants(d)">View Applicants</button>
+                      <button class="btn btn-sm btn-primary me-1" @click="editDrive(d)">Edit</button>
+                      <button class="btn btn-sm btn-success me-1" @click="toggleDriveStatus(d.p_id)">Reopen Drive</button>
+                      <button class="btn btn-sm btn-danger" @click="deleteDrive(d.p_id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div v-if="selectedDrive" class="mt-4">
+            <h4>Applicants for {{ selectedDrive.title }}</h4>
+            <button class="btn btn-sm btn-secondary mb-2" @click="selectedDrive = null; applicants = [];">Close</button>
+            <div v-if="applicants.length === 0" class="text-muted">No applicants.</div>
+            <div v-else class="table-responsive">
+              <table class="table table-striped">
+                <thead><tr><th>Name</th><th>Roll No</th><th>Branch</th><th>CGPA</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr v-for="a in applicants" :key="a.a_id">
+                    <td>{{ a.student_name }}</td>
+                    <td>{{ a.roll_number }}</td>
+                    <td>{{ a.branch }}</td>
+                    <td>{{ a.cgpa }}</td>
+                    <td>{{ capitalize(a.status) }}</td>
+                    <td>
+                      <select v-model="a.newStatus" class="form-select form-select-sm d-inline w-auto">
+                        <option value="" disabled>Select</option>
+                        <option value="shortlisted">Shortlist</option>
+                        <option value="selected">Select</option>
+                        <option value="rejected">Reject</option>
+                      </select>
+                      <button class="btn btn-sm btn-primary ms-1" @click="updateStatus(a)">Update</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div v-if="showEdit" class="card p-3 mt-3">
+            <h5>Edit Drive</h5>
+            <form @submit.prevent="updateDrive">
+              <div class="mb-3"><input v-model="editingDrive.title" class="form-control" placeholder="Job Title" required></div>
+              <div class="mb-3"><textarea v-model="editingDrive.description" class="form-control" placeholder="Job Description"></textarea></div>
+              <div class="row">
+                <div class="col-md-4"><input v-model="editingDrive.branch" class="form-control" placeholder="Eligible Branches"></div>
+                <div class="col-md-4"><input v-model="editingDrive.cgpa_min" type="number" step="0.1" class="form-control" placeholder="Minimum CGPA"></div>
+                <div class="col-md-4"><input v-model="editingDrive.year" class="form-control" placeholder="Eligible Years"></div>
+              </div>
+              <div class="mt-3"><input v-model="editingDrive.deadline" type="datetime-local" class="form-control"></div>
+              <button type="submit" class="btn btn-primary mt-2">Update Drive</button>
+              <button class="btn btn-secondary mt-2 ms-2" @click="showEdit = false">Cancel</button>
+            </form>
+          </div>
+        </div>`,
+            data() {
+                return {
+                    companyName: '',
+                    approved: false,
+                    activeDrives: [],
+                    closedDrives: [],
+                    showCreate: false,
+                    newDrive: { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' },
+                    selectedDrive: null,
+                    applicants: [],
+                    showEdit: false,
+                    editingDrive: {}
+                };
+            },
+            async mounted() {
+                await this.fetchDashboard();
+            },
+            methods: {
+                capitalize(str) {
+                    if (!str) return '';
+                    return str.charAt(0).toUpperCase() + str.slice(1);
+                },
+                async fetchDashboard() {
+                    try {
+                        const res = await axios.get('/api/company/dashboard');
+                        this.companyName = res.data.company_name;
+                        this.approved = res.data.approved;
+                        this.activeDrives = res.data.active_drives;
+                        this.closedDrives = res.data.closed_drives;
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error fetching dashboard');
+                    }
+                },
+                async createDrive() {
+                    try {
+                        const deadline = this.newDrive.deadline ? new Date(this.newDrive.deadline).toISOString() : null;
+                        await axios.post('/api/company/drives', {
+                            title: this.newDrive.title,
+                            description: this.newDrive.description,
+                            branch: this.newDrive.branch,
+                            cgpa_min: parseFloat(this.newDrive.cgpa_min) || null,
+                            year: this.newDrive.year,
+                            deadline: deadline
+                        });
+                        alert('Drive created, pending approval');
+                        this.newDrive = { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' };
+                        this.showCreate = false;
+                        this.fetchDashboard();
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error creating drive');
+                    }
+                },
+                editDrive(drive) {
+                    this.editingDrive = {
+                        p_id: drive.p_id,
+                        title: drive.title,
+                        description: drive.description || '',
+                        branch: drive.branch || '',
+                        cgpa_min: drive.cgpa_min || '',
+                        year: drive.year || '',
+                        deadline: drive.deadline ? drive.deadline.substring(0, 16) : ''
+                    };
+                    this.showEdit = true;
+                },
+                async updateDrive() {
+                    try {
+                        const payload = {
+                            title: this.editingDrive.title,
+                            description: this.editingDrive.description,
+                            branch: this.editingDrive.branch,
+                            cgpa_min: parseFloat(this.editingDrive.cgpa_min) || null,
+                            year: this.editingDrive.year,
+                            deadline: this.editingDrive.deadline ? new Date(this.editingDrive.deadline).toISOString() : null
+                        };
+                        await axios.put(`/api/company/drives/${this.editingDrive.p_id}`, payload);
+                        alert('Drive updated');
+                        this.showEdit = false;
+                        this.fetchDashboard();
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error updating drive');
+                    }
+                },
+                async deleteDrive(driveId) {
+                    if (!confirm('Are you sure you want to delete this drive?')) return;
+                    try {
+                        await axios.delete(`/api/company/drives/${driveId}`);
+                        alert('Drive deleted');
+                        this.fetchDashboard();
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error deleting drive');
+                    }
+                },
+                async viewApplicants(drive) {
+                    this.selectedDrive = drive;
+                    try {
+                        const res = await axios.get(`/api/company/drives/${drive.p_id}/applications`);
+                        this.applicants = res.data.map(a => ({ ...a, newStatus: '' }));
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error fetching applicants');
+                        this.selectedDrive = null;
+                    }
+                },
+                async updateStatus(applicant) {
+                    if (!applicant.newStatus) return;
+                    try {
+                        await axios.put(`/api/company/applications/${applicant.a_id}`, { status: applicant.newStatus });
+                        alert('Status updated');
+                        this.viewApplicants(this.selectedDrive);
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error updating status');
+                    }
+                },
+                async toggleDriveStatus(driveId) {
+                    try {
+                        await axios.put(`/api/company/drives/${driveId}/toggle-status`);
+                        this.fetchDashboard();
+                    } catch (e) {
+                        alert(e.response?.data?.msg || 'Error toggling drive status');
+                    }
+                }
+            }
+        };
+
         const StudentDashboard = { template: '<div><h2 style="color: var(--tertiary);">Student Dashboard</h2><p>Welcome Student!</p></div>' };
 
         const routes = [
@@ -599,7 +1210,20 @@
                     role: localStorage.getItem('role') || ''
                 };
             },
+            computed: {
+                navbarClass() {
+                    if (!this.token) return 'navbar-guest';
+                    if (this.role === 'admin') return 'navbar-admin';
+                    if (this.role === 'company') return 'navbar-company';
+                    if (this.role === 'student') return 'navbar-student';
+                    return '';
+                }
+            },
             methods: {
+                updateAuth() {
+                    this.token = localStorage.getItem('token');
+                    this.role = localStorage.getItem('role') || '';
+                },
                 logout() {
                     localStorage.removeItem('token');
                     localStorage.removeItem('role');

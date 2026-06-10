@@ -1,7 +1,13 @@
 from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, render_template, request
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    get_jwt,
+    get_jwt_identity,
+    jwt_required,
+)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -84,7 +90,9 @@ class PlacementDrive(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey("company.c_id"), nullable=False)
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text)
-    eligibility = db.Column(db.Text)
+    branch = db.Column(db.String(200))
+    cgpa_min = db.Column(db.Float)
+    year = db.Column(db.String(200))
     deadline = db.Column(db.DateTime)
     status = db.Column(db.String(20), default="pending")
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -173,15 +181,19 @@ def sample_data():
         company_id=c1.c_id,
         title="Software Engineer",
         description="Develop web apps",
-        eligibility='{"branch":["CS"],"cgpa":7.0,"year":[2024]}',
+        branch="CS",
+        cgpa_min=7.0,
+        year="2024",
         deadline=datetime.now() + timedelta(days=30),
         status="approved",
     )
     d2 = PlacementDrive(
         company_id=c1.c_id,
-        title="Data Analyst",
-        description="Analyze data",
-        eligibility='{"branch":["CS","EE"],"cgpa":7.5,"year":[2024]}',
+        title="req Analyst",
+        description="Analyze req",
+        branch="CS,EE",
+        cgpa_min=7.5,
+        year="2024",
         deadline=datetime.now() + timedelta(days=15),
         status="pending",
     )
@@ -302,19 +314,100 @@ def admin_list_companies():
     if err:
         return err
 
-    com = Company.query.all()
+    f = request.args.get("filter", "all")
+    query = Company.query
+    if f == "approved":
+        query = query.filter_by(approved=True)
+    elif f == "unapproved":
+        query = query.filter_by(approved=False)
+    elif f == "active":
+        query = query.join(User).filter(User.is_active == True)
+    elif f == "inactive":
+        query = query.join(User).filter(User.is_active == False)
+
+    com = query.all()
     res = []
     for c in com:
-        user = User.query.get(c.user_id)
+        u = User.query.get(c.user_id)
         res.append(
             {
                 "c_id": c.c_id,
                 "name": c.name,
-                "email": user.email,
+                "email": u.email,
                 "approved": c.approved,
-                "active": user.is_active,
+                "active": u.is_active,
                 "industry": c.industry,
                 "location": c.location,
+            }
+        )
+    return jsonify(res)
+
+
+@app.route("/api/admin/companies/<int:company_id>")
+@jwt_required()
+def admin_view_company(company_id):
+    err = check_role("admin")
+    if err:
+        return err
+    c = Company.query.get_or_404(company_id)
+    u = User.query.get(c.user_id)
+    return jsonify(
+        c_id=c.c_id,
+        name=c.name,
+        email=u.email,
+        industry=c.industry,
+        location=c.location,
+        description=c.description,
+        website=c.website,
+        hr_contact=c.hr_contact,
+        approved=c.approved,
+        active=u.is_active,
+    )
+
+
+@app.route("/api/admin/companies/<int:company_id>/drives")
+@jwt_required()
+def admin_view_company_drives(company_id):
+    err = check_role("admin")
+    if err:
+        return err
+    dr = PlacementDrive.query.filter_by(company_id=company_id).all()
+    res = []
+    for d in dr:
+        res.append(
+            {
+                "p_id": d.p_id,
+                "title": d.title,
+                "description": d.description,
+                "branch": d.branch,
+                "cgpa_min": d.cgpa_min,
+                "year": d.year,
+                "deadline": d.deadline.isoformat() if d.deadline else None,
+                "status": d.status,
+            }
+        )
+    return jsonify(res)
+
+
+@app.route("/api/admin/drives/<int:drive_id>/applications")
+@jwt_required()
+def admin_view_drive_applications(drive_id):
+    err = check_role("admin")
+    if err:
+        return err
+    apps = Application.query.filter_by(drive_id=drive_id).all()
+    res = []
+    for a in apps:
+        student = Student.query.get(a.student_id)
+        res.append(
+            {
+                "a_id": a.a_id,
+                "student_name": student.name,
+                "roll_number": student.roll_number,
+                "branch": student.branch,
+                "cgpa": student.cgpa,
+                "status": a.status,
+                "applied_date": a.applied_date.isoformat(),
             }
         )
     return jsonify(res)
@@ -369,15 +462,28 @@ def admin_list_drives():
     if err:
         return err
 
-    dr = PlacementDrive.query.all()
+    f = request.args.get("filter", "all")
+    search = request.args.get("q", "")
+    query = PlacementDrive.query
+    if f == "pending":
+        query = query.filter_by(status="pending")
+    elif f == "approved":
+        query = query.filter_by(status="approved")
+    elif f == "closed":
+        query = query.filter_by(status="closed")
+    if search:
+        query = query.join(Company).filter(
+            (PlacementDrive.title.contains(search)) | (Company.name.contains(search))
+        )
+    dr = query.all()
     res = []
     for d in dr:
-        company = Company.query.get(d.company_id)
+        c = Company.query.get(d.company_id)
         res.append(
             {
                 "p_id": d.p_id,
                 "title": d.title,
-                "company_name": company.name,
+                "company_name": c.name,
                 "status": d.status,
                 "deadline": d.deadline.isoformat() if d.deadline else None,
             }
@@ -420,10 +526,18 @@ def admin_list_students():
     if err:
         return err
 
-    q = request.args.get("q", "")
-    st = Student.query.filter(
-        (Student.name.contains(q)) | (Student.roll_number.contains(q))
-    ).all()
+    f = request.args.get("filter", "all")
+    search = request.args.get("q", "")
+    query = Student.query
+    if f == "active":
+        query = query.join(User).filter(User.is_active == True)
+    elif f == "inactive":
+        query = query.join(User).filter(User.is_active == False)
+    if search:
+        query = query.filter(
+            (Student.name.contains(search)) | (Student.roll_number.contains(search))
+        )
+    st = query.all()
     res = []
     for s in st:
         user = User.query.get(s.user_id)
@@ -439,6 +553,73 @@ def admin_list_students():
     return jsonify(res)
 
 
+@app.route("/api/admin/students/<int:student_id>")
+@jwt_required()
+def admin_view_student(student_id):
+    err = check_role("admin")
+    if err:
+        return err
+    s = Student.query.get_or_404(student_id)
+    u = User.query.get(s.user_id)
+    return jsonify(
+        s_id=s.s_id,
+        name=s.name,
+        roll_number=s.roll_number,
+        email=u.email,
+        branch=s.branch,
+        cgpa=s.cgpa,
+        year=s.year,
+        skills=s.skills,
+        resume_path=s.resume_path,
+        active=u.is_active,
+    )
+
+
+@app.route("/api/admin/students/<int:student_id>/applications")
+@jwt_required()
+def admin_view_student_applications(student_id):
+    err = check_role("admin")
+    if err:
+        return err
+    apps = Application.query.filter_by(student_id=student_id).all()
+    res = []
+    for a in apps:
+        d = PlacementDrive.query.get(a.drive_id)
+        c = Company.query.get(d.company_id)
+        res.append(
+            {
+                "a_id": a.a_id,
+                "company_name": c.name,
+                "drive_title": d.title,
+                "status": a.status,
+                "applied_date": a.applied_date.isoformat(),
+            }
+        )
+    return jsonify(res)
+
+
+@app.route("/api/admin/drives/<int:drive_id>")
+@jwt_required()
+def admin_view_drive(drive_id):
+    err = check_role("admin")
+    if err:
+        return err
+    d = PlacementDrive.query.get_or_404(drive_id)
+    c = Company.query.get(d.company_id)
+    return jsonify(
+        p_id=d.p_id,
+        title=d.title,
+        description=d.description,
+        branch=d.branch,
+        cgpa_min=d.cgpa_min,
+        year=d.year,
+        deadline=d.deadline.isoformat() if d.deadline else None,
+        status=d.status,
+        company_name=c.name,
+        company_id=c.c_id,
+    )
+
+
 @app.route("/api/admin/students/<int:student_id>/toggle-active", methods=["PUT"])
 @jwt_required()
 def admin_toggle_student_active(student_id):
@@ -451,6 +632,182 @@ def admin_toggle_student_active(student_id):
     u.is_active = not u.is_active
     db.session.commit()
     return jsonify(msg=f"Student {'Deactivated' if not u.is_active else 'Activated'}")
+
+
+@app.route("/api/company/dashboard")
+@jwt_required()
+def company_dashboard():
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    all_d = PlacementDrive.query.filter_by(company_id=c.c_id).all()
+    active_drives = []
+    closed_drives = []
+    for d in all_d:
+        ac = Application.query.filter_by(drive_id=d.p_id).count()
+        dd = {
+            "p_id": d.p_id,
+            "title": d.title,
+            "description": d.description,
+            "branch": d.branch,
+            "cgpa_min": d.cgpa_min,
+            "year": d.year,
+            "deadline": d.deadline.isoformat() if d.deadline else None,
+            "status": d.status,
+            "applicants": ac,
+        }
+        if d.status == "closed":
+            closed_drives.append(dd)
+        else:
+            active_drives.append(dd)
+    return jsonify(
+        company_name=c.name,
+        approved=c.approved,
+        active_drives=active_drives,
+        closed_drives=closed_drives,
+    )
+
+
+@app.route("/api/company/drives", methods=["POST"])
+@jwt_required()
+def company_create_drive():
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    if not c.approved:
+        return jsonify(msg="Company not approved"), 403
+    d = request.get_json()
+    deadline_str = d.get("deadline")
+    deadline = datetime.fromisoformat(deadline_str) if deadline_str else None
+    dr = PlacementDrive(
+        company_id=c.c_id,
+        title=d["title"],
+        description=d.get("description"),
+        branch=d.get("branch"),
+        cgpa_min=d.get("cgpa_min"),
+        year=d.get("year"),
+        deadline=deadline,
+        status="pending",
+    )
+    db.session.add(dr)
+    db.session.commit()
+    return jsonify(msg="Drive Created. Pending Approval"), 201
+
+
+@app.route("/api/company/drives/<int:drive_id>", methods=["PUT"])
+@jwt_required()
+def company_update_drive(drive_id):
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    d = PlacementDrive.query.get_or_404(drive_id)
+    if d.company_id != c.c_id:
+        return jsonify(msg="Unauthorized"), 403
+    req = request.get_json()
+    d.title = req.get("title", d.title)
+    d.description = req.get("description", d.description)
+    d.branch = req.get("branch", d.branch)
+    d.cgpa_min = req.get("cgpa_min", d.cgpa_min)
+    d.year = req.get("year", d.year)
+    deadline_str = req.get("deadline")
+    if deadline_str is not None:
+        d.deadline = datetime.fromisoformat(deadline_str) if deadline_str else None
+    db.session.commit()
+    return jsonify(msg="Drive updated")
+
+
+@app.route("/api/company/drives/<int:drive_id>", methods=["DELETE"])
+@jwt_required()
+def company_delete_drive(drive_id):
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    d = PlacementDrive.query.get_or_404(drive_id)
+    if d.company_id != c.c_id:
+        return jsonify(msg="Unauthorized"), 403
+    db.session.delete(d)
+    db.session.commit()
+    return jsonify(msg="Drive deleted")
+
+
+@app.route("/api/company/drives/<int:drive_id>/toggle-status", methods=["PUT"])
+@jwt_required()
+def company_toggle_drive_status(drive_id):
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    d = PlacementDrive.query.get_or_404(drive_id)
+    if d.company_id != c.c_id:
+        return jsonify(msg="Unauthorized"), 403
+    if d.status == "approved":
+        d.status = "closed"
+    elif d.status == "closed":
+        d.status = "approved"
+    else:
+        return jsonify(msg="Drive status cannot be toggled"), 400
+    db.session.commit()
+    return jsonify(msg=f"Drive status changed to {d.status}")
+
+
+@app.route("/api/company/drives/<int:drive_id>/applications")
+@jwt_required()
+def company_view_applications(drive_id):
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    d = PlacementDrive.query.get_or_404(drive_id)
+    if d.company_id != c.c_id:
+        return jsonify(msg="Unauthorized"), 403
+    app = Application.query.filter_by(drive_id=drive_id).all()
+    res = []
+    for a in app:
+        s = Student.query.get(a.student_id)
+        res.append(
+            {
+                "a_id": a.a_id,
+                "student_id": s.s_id,
+                "student_name": s.name,
+                "roll_number": s.roll_number,
+                "branch": s.branch,
+                "cgpa": s.cgpa,
+                "status": a.status,
+                "applied_date": a.applied_date.isoformat(),
+            }
+        )
+    return jsonify(res)
+
+
+@app.route("/api/company/applications/<int:app_id>", methods=["PUT"])
+@jwt_required()
+def company_update_application(app_id):
+    err = check_role("company")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    c = Company.query.filter_by(user_id=u_id).first_or_404()
+    app = Application.query.get_or_404(app_id)
+    dr = PlacementDrive.query.get(app.drive_id)
+    if dr.company_id != c.c_id:
+        return jsonify(msg="Unauthorized"), 403
+    d = request.get_json()
+    stat = d.get("status")
+    if stat not in ["shortlisted", "selected", "rejected"]:
+        return jsonify(msg="Invalid status"), 400
+    app.status = stat
+    db.session.commit()
+    return jsonify(msg="Status updated")
 
 
 @app.route("/")
