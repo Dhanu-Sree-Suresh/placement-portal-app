@@ -1215,6 +1215,23 @@
           </div>
 
           <hr>
+          <h4>Placement History</h4>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead><tr><th>Company</th><th>Position</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody>
+                <tr v-for="h in history" :key="h.date + h.position">
+                  <td>{{ h.company_name }}</td>
+                  <td>{{ h.position }}</td>
+                  <td>{{ capitalize(h.status) }}</td>
+                  <td>{{ h.date }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-if="history.length === 0" class="text-muted">No placement history yet.</div>
+
+          <hr>
           <h4>Profile</h4>
           <div class="row">
             <div class="col-md-6">
@@ -1245,6 +1262,7 @@
                     studentName: '',
                     eligibleDrives: [],
                     applications: [],
+                    history: [],
                     profile: {},
                     showEditProfile: false,
                     editProfile: {}
@@ -1253,6 +1271,7 @@
             async mounted() {
                 await this.fetchDashboard();
                 this.fetchApplications();
+                this.fetchHistory();
                 this.fetchProfile();
             },
             methods: {
@@ -1268,6 +1287,10 @@
                 async fetchApplications() {
                     const res = await axios.get('/api/student/applications');
                     this.applications = res.data;
+                },
+                async fetchHistory() {
+                    const res = await axios.get('/api/student/history');
+                    this.history = res.data;
                 },
                 async fetchProfile() {
                     const res = await axios.get('/api/student/profile');
