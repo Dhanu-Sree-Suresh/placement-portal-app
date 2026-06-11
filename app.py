@@ -810,6 +810,168 @@ def company_update_application(app_id):
     return jsonify(msg="Status updated")
 
 
+@app.route("/api/student/dashboard")
+@jwt_required()
+def student_dashboard():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+
+    ad = PlacementDrive.query.filter_by(status="approved").all()
+    dl = []
+    for d in ad:
+        e = True
+        if d.branch and s.branch:
+            branches = [b.strip() for b in d.branch.split(",")]
+            if s.branch not in branches:
+                e = False
+        if d.cgpa_min is not None and s.cgpa is not None and s.cgpa < d.cgpa_min:
+            e = False
+        if d.year and s.year:
+            years = [y.strip() for y in d.year.split(",")]
+            if str(s.year) not in years:
+                e = False
+
+        if not e:
+            continue
+
+        a = Application.query.filter_by(student_id=s.s_id, drive_id=d.p_id).first()
+        c = Company.query.get(d.company_id)
+        dl.append(
+            {
+                "p_id": d.p_id,
+                "title": d.title,
+                "company_name": c.name,
+                "description": d.description,
+                "branch": d.branch,
+                "cgpa_min": d.cgpa_min,
+                "year": d.year,
+                "deadline": d.deadline.isoformat() if d.deadline else None,
+                "applied": a is not None,
+                "status": a.status if a else None,
+            }
+        )
+    return jsonify(student_name=s.name, drives=dl)
+
+
+@app.route("/api/student/apply/<int:drive_id>", methods=["POST"])
+@jwt_required()
+def student_apply(drive_id):
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    d = PlacementDrive.query.get_or_404(drive_id)
+
+    if d.status != "approved":
+        return jsonify(msg="Drive not open for applications"), 400
+
+    if d.branch and s.branch:
+        br = [b.strip() for b in d.branch.split(",")]
+        if s.branch not in br:
+            return jsonify(msg="Not e (branch)"), 403
+    if d.cgpa_min is not None and s.cgpa is not None and s.cgpa < d.cgpa_min:
+        return jsonify(msg="Not Eligible due to CGPA"), 403
+    if d.year and s.year:
+        yr = [y.strip() for y in d.year.split(",")]
+        if str(s.year) not in yr:
+            return jsonify(msg="Not Eligible due to year"), 403
+
+    exist = Application.query.filter_by(student_id=s.s_id, drive_id=drive_id).first()
+    if exist:
+        return jsonify(msg="Already Applied"), 400
+
+    app = Application(student_id=s.s_id, drive_id=drive_id, status="applied")
+    db.session.add(app)
+    db.session.commit()
+    return jsonify(msg="Applied successfully")
+
+
+@app.route("/api/student/applications")
+@jwt_required()
+def student_applications():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    apps = Application.query.filter_by(student_id=s.s_id).all()
+    res = []
+    for a in apps:
+        d = PlacementDrive.query.get(a.drive_id)
+        c = Company.query.get(d.company_id)
+        res.append(
+            {
+                "a_id": a.a_id,
+                "drive_title": d.title,
+                "company_name": c.name,
+                "status": a.status,
+                "applied_date": a.applied_date.isoformat(),
+            }
+        )
+    return jsonify(res)
+
+
+@app.route("/api/student/profile", methods=["GET", "PUT"])
+@jwt_required()
+def student_profile():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    if request.method == "GET":
+        return jsonify(
+            name=s.name,
+            roll_number=s.roll_number,
+            branch=s.branch,
+            cgpa=s.cgpa,
+            year=s.year,
+            skills=s.skills,
+            resume_path=s.resume_path,
+        )
+    else:
+        d = request.get_json()
+        s.name = d.get("name", s.name)
+        s.roll_number = d.get("roll_number", s.roll_number)
+        s.branch = d.get("branch", s.branch)
+        if "cgpa" in d:
+            s.cgpa = d["cgpa"]
+        if "year" in d:
+            s.year = d["year"]
+        s.skills = d.get("skills", s.skills)
+        db.session.commit()
+        return jsonify(msg="Profile Updated")
+
+
+@app.route("/api/student/history")
+@jwt_required()
+def student_history():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    apps = Application.query.filter_by(student_id=s.s_id).all()
+    h = []
+    for a in apps:
+        if a.status in ["selected", "rejected"]:
+            d = PlacementDrive.query.get(a.drive_id)
+            c = Company.query.get(d.company_id)
+            h.append(
+                {
+                    "company_name": c.name,
+                    "position": d.title,
+                    "status": a.status,
+                    "date": a.applied_date.isoformat(),
+                }
+            )
+    return jsonify(h)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
