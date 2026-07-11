@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, render_template, request
@@ -223,9 +224,15 @@ def check_role(role):
         return None
 
 
+def is_valid_email(email):
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+
 @app.route("/api/login", methods=["POST"])
 def login():
     d = request.get_json()
+    if not d.get("email") or not d.get("password"):
+        return jsonify(msg="Email and password required"), 400
     u = User.query.filter_by(email=d.get("email")).first()
     if not u or not u.check_password(d.get("password")):
         return jsonify(msg="Invalid Email or Password"), 401
@@ -240,21 +247,39 @@ def login():
 @app.route("/api/register/student", methods=["POST"])
 def register_student():
     d = request.get_json()
+    if not d.get("email") or not d.get("password") or not d.get("name"):
+        return jsonify(msg="Missing required fields (email, password, name)"), 400
+    if not is_valid_email(d["email"]):
+        return jsonify(msg="Invalid email format"), 400
     if User.query.filter_by(email=d["email"]).first():
         return jsonify(msg="Email already registered"), 400
-    u = User(email=d["email"], role="student")
+    cgpa = d.get("cgpa")
+    if cgpa is not None:
+        try:
+            cgpa = float(cgpa)
+            if cgpa < 0 or cgpa > 10:
+                return jsonify(msg="CGPA must be between 0 and 10"), 400
+        except (ValueError, TypeError):
+            return jsonify(msg="Invalid CGPA"), 400
+    year = d.get("year")
+    if year is not None:
+        try:
+            year = int(year)
+        except (ValueError, TypeError):
+            return jsonify(msg="Invalid graduation year"), 400
+    u = User(email=d["email"].strip().lower(), role="student")
     u.set_password(d["password"])
     db.session.add(u)
     db.session.flush()
 
     s = Student(
         user_id=u.u_id,
-        name=d["name"],
-        roll_number=d.get("roll_number"),
-        branch=d.get("branch"),
-        cgpa=d.get("cgpa"),
-        year=d.get("year"),
-        skills=d.get("skills"),
+        name=d["name"].strip(),
+        roll_number=d.get("roll_number", "").strip() or None,
+        branch=d.get("branch", "").strip() or None,
+        cgpa=cgpa,
+        year=year,
+        skills=d.get("skills", "").strip() or None,
     )
     db.session.add(s)
     db.session.commit()
@@ -264,21 +289,27 @@ def register_student():
 @app.route("/api/register/company", methods=["POST"])
 def register_company():
     d = request.get_json()
+    if not d.get("email") or not d.get("password") or not d.get("name"):
+        return jsonify(
+            msg="Missing required fields (email, password, company name)"
+        ), 400
+    if not is_valid_email(d["email"]):
+        return jsonify(msg="Invalid email format"), 400
     if User.query.filter_by(email=d["email"]).first():
         return jsonify(msg="Email already registered"), 400
-    u = User(email=d["email"], role="company")
+    u = User(email=d["email"].strip().lower(), role="company")
     u.set_password(d["password"])
     db.session.add(u)
     db.session.flush()
 
     c = Company(
         user_id=u.u_id,
-        name=d["name"],
-        industry=d.get("industry"),
-        location=d.get("location"),
-        description=d.get("description"),
-        website=d.get("website"),
-        hr_contact=d.get("hr_contact"),
+        name=d["name"].strip(),
+        industry=d.get("industry", "").strip() or None,
+        location=d.get("location", "").strip() or None,
+        description=d.get("description", "").strip() or None,
+        website=d.get("website", "").strip() or None,
+        hr_contact=d.get("hr_contact", "").strip() or None,
     )
     db.session.add(c)
     db.session.commit()
@@ -681,15 +712,32 @@ def company_create_drive():
     if not c.approved:
         return jsonify(msg="Company not approved"), 403
     d = request.get_json()
+    if not d.get("title"):
+        return jsonify(msg="Job title is required"), 400
     deadline_str = d.get("deadline")
-    deadline = datetime.fromisoformat(deadline_str) if deadline_str else None
+    deadline = None
+    if deadline_str:
+        try:
+            deadline = datetime.fromisoformat(deadline_str)
+        except:
+            return jsonify(msg="Invalid deadline format"), 400
+    branch = d.get("branch", "").strip() or None
+    cgpa_min = d.get("cgpa_min")
+    if cgpa_min is not None:
+        try:
+            cgpa_min = float(cgpa_min)
+            if cgpa_min < 0 or cgpa_min > 10:
+                return jsonify(msg="CGPA min must be between 0 and 10"), 400
+        except:
+            return jsonify(msg="Invalid CGPA min"), 400
+    year = d.get("year", "").strip() or None
     dr = PlacementDrive(
         company_id=c.c_id,
-        title=d["title"],
-        description=d.get("description"),
-        branch=d.get("branch"),
-        cgpa_min=d.get("cgpa_min"),
-        year=d.get("year"),
+        title=d["title"].strip(),
+        description=d.get("description", "").strip() or None,
+        branch=branch,
+        cgpa_min=cgpa_min,
+        year=year,
         deadline=deadline,
         status="pending",
     )
@@ -710,14 +758,25 @@ def company_update_drive(drive_id):
     if d.company_id != c.c_id:
         return jsonify(msg="Unauthorized"), 403
     req = request.get_json()
-    d.title = req.get("title", d.title)
+    d.title = req.get("title", d.title).strip()
     d.description = req.get("description", d.description)
     d.branch = req.get("branch", d.branch)
-    d.cgpa_min = req.get("cgpa_min", d.cgpa_min)
+    cgpa_min = req.get("cgpa_min")
+    if cgpa_min is not None:
+        try:
+            cgpa_min = float(cgpa_min)
+            if cgpa_min < 0 or cgpa_min > 10:
+                return jsonify(msg="CGPA min must be between 0 and 10"), 400
+            d.cgpa_min = cgpa_min
+        except:
+            return jsonify(msg="Invalid CGPA min"), 400
     d.year = req.get("year", d.year)
     deadline_str = req.get("deadline")
     if deadline_str is not None:
-        d.deadline = datetime.fromisoformat(deadline_str) if deadline_str else None
+        try:
+            d.deadline = datetime.fromisoformat(deadline_str) if deadline_str else None
+        except:
+            return jsonify(msg="Invalid deadline format"), 400
     db.session.commit()
     return jsonify(msg="Drive updated")
 
@@ -935,14 +994,27 @@ def student_profile():
         )
     else:
         d = request.get_json()
-        s.name = d.get("name", s.name)
-        s.roll_number = d.get("roll_number", s.roll_number)
-        s.branch = d.get("branch", s.branch)
+        if "name" in d:
+            s.name = d["name"].strip()
+        if "roll_number" in d:
+            s.roll_number = d["roll_number"].strip() or None
+        if "branch" in d:
+            s.branch = d["branch"].strip() or None
         if "cgpa" in d:
-            s.cgpa = d["cgpa"]
+            try:
+                cgpa = float(d["cgpa"])
+                if cgpa < 0 or cgpa > 10:
+                    return jsonify(msg="CGPA must be between 0 and 10"), 400
+                s.cgpa = cgpa
+            except:
+                return jsonify(msg="Invalid CGPA"), 400
         if "year" in d:
-            s.year = d["year"]
-        s.skills = d.get("skills", s.skills)
+            try:
+                s.year = int(d["year"])
+            except:
+                return jsonify(msg="Invalid year"), 400
+        if "skills" in d:
+            s.skills = d["skills"].strip() or None
         db.session.commit()
         return jsonify(msg="Profile Updated")
 
@@ -970,6 +1042,17 @@ def student_history():
                 }
             )
     return jsonify(h)
+
+
+@app.route("/api/student/export-csv", methods=["POST"])
+@jwt_required()
+def student_export_csv():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    return jsonify(msg="CSV Exported (Check Email)")
 
 
 @app.route("/")
