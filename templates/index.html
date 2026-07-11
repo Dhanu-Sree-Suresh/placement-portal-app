@@ -2,448 +2,448 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Placement Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #54B39A;
-            --secondary: #6092C1;
-            --accent: #D46087;
-            --tertiary: #8C7BB8;
-            --quaternary: #7FAFD4;
-            --success: #7FB8A4;
-            --warning: #E8A317;
-            --danger: #D97C6F;
-            --info: #6B8DAF;
-            --low: #7FB8A4;
-            --medium: #E8A317;
-            --high: #D97C6F;
-            --critical: #A30006;
-            --text-dark-gray: #2c3e50;
-            --text-white: #ffffff;
-            --card-student: #d4e9e2;
-            --card-company: #d6e2f0;
-            --card-drive: #e3d7f5;
-            --card-pending: #fbe8c6;
-        }
-
-        body {
-            background: #f8f9fa;
-            color: var(--text-dark-gray);
-        }
-
-        .navbar-admin {
-            background-color: #ffffff !important;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .navbar-admin .navbar-brand {
-            color: var(--primary) !important;
-            font-weight: 700;
-        }
-
-        .navbar-company {
-            background-color: #ffffff !important;
-            border-bottom: 2px solid var(--secondary);
-        }
-
-        .navbar-company .navbar-brand {
-            color: var(--secondary) !important;
-            font-weight: 700;
-        }
-
-        .navbar-student {
-            background-color: #ffffff !important;
-            border-bottom: 2px solid var(--tertiary);
-        }
-
-        .navbar-student .navbar-brand {
-            color: var(--tertiary) !important;
-            font-weight: 700;
-        }
-
-        .navbar-guest {
-            background-color: #ffffff !important;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .navbar-guest .navbar-brand {
-            color: var(--accent) !important;
-            font-weight: 700;
-        }
-
-        .navbar-guest .btn-outline-danger {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .navbar-guest .btn-outline-danger:hover {
-            background-color: var(--accent);
-            color: #fff;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: #3e8b74;
-            border-color: #3e8b74;
-        }
-
-        .btn-primary:active,
-        .btn-primary:focus,
-        .btn-primary:focus-visible {
-            background-color: #2f6e5a !important;
-            border-color: #2f6e5a !important;
-            box-shadow: 0 0 0 0.2rem rgba(84, 179, 154, 0.3) !important;
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .btn-accent:hover {
-            background-color: #b84a6e;
-            border-color: #b84a6e;
-            color: #fff;
-        }
-
-        .btn-accent:active,
-        .btn-accent:focus {
-            background-color: #9b3e5c !important;
-            border-color: #9b3e5c !important;
-            box-shadow: 0 0 0 0.2rem rgba(212, 96, 135, 0.3) !important;
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #4a75a0;
-            border-color: #4a75a0;
-        }
-
-        .btn-success {
-            background-color: var(--success);
-            border-color: var(--success);
-        }
-
-        .btn-success:hover {
-            background-color: #5d8c7a;
-            border-color: #5d8c7a;
-        }
-
-        .btn-warning {
-            background-color: var(--warning);
-            border-color: var(--warning);
-            color: #fff;
-        }
-
-        .btn-warning:hover {
-            background-color: #c48e14;
-            border-color: #c48e14;
-            color: #fff;
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-            border-color: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background-color: #b85d52;
-            border-color: #b85d52;
-        }
-
-        .btn-outline-primary,
-        .btn-outline-secondary,
-        .btn-outline-success,
-        .btn-outline-danger,
-        .btn-outline-warning,
-        .btn-outline-info,
-        .btn-outline-company,
-        .btn-outline-drive,
-        .btn-outline-student {
-            background-color: transparent;
-            transition: all 0.15s ease-in-out;
-        }
-
-        .btn-outline-primary {
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary);
-            color: var(--text-dark-gray);
-            border-color: var(--primary);
-        }
-
-        .btn-outline-primary:active,
-        .btn-outline-primary.active,
-        .btn-outline-primary.selected,
-        .btn-outline-primary:focus-visible {
-            background-color: var(--primary) !important;
-            color: #fff !important;
-            border-color: var(--primary) !important;
-        }
-
-        .btn-outline-success {
-            color: var(--success);
-            border-color: var(--success);
-        }
-
-        .btn-outline-success:hover {
-            background-color: var(--success);
-            color: var(--text-dark-gray);
-            border-color: var(--success);
-        }
-
-        .btn-outline-success:active,
-        .btn-outline-success.active,
-        .btn-outline-success.selected {
-            background-color: var(--success) !important;
-            color: #fff !important;
-            border-color: var(--success) !important;
-        }
-
-        .btn-outline-info {
-            color: var(--info);
-            border-color: var(--info);
-        }
-
-        .btn-outline-info:hover {
-            background-color: var(--info);
-            color: var(--text-dark-gray);
-            border-color: var(--info);
-        }
-
-        .btn-outline-info:active,
-        .btn-outline-info.active,
-        .btn-outline-info.selected {
-            background-color: var(--info) !important;
-            color: #fff !important;
-            border-color: var(--info) !important;
-        }
-
-        .btn-outline-company {
-            background-color: transparent;
-            color: #6b8cb3;
-            border-color: #6b8cb3;
-        }
-
-        .btn-outline-company:hover {
-            background-color: #7f9fc4;
-            color: var(--text-dark-gray);
-            border-color: #7f9fc4;
-        }
-
-        .btn-outline-company.active,
-        .btn-outline-company.selected {
-            background-color: #7f9fc4 !important;
-            color: #fff !important;
-            border-color: #7f9fc4 !important;
-        }
-
-        .btn-outline-drive {
-            background-color: transparent;
-            color: #9575c1;
-            border-color: #9575c1;
-        }
-
-        .btn-outline-drive:hover {
-            background-color: #a88bcf;
-            color: var(--text-dark-gray);
-            border-color: #a88bcf;
-        }
-
-        .btn-outline-drive.active,
-        .btn-outline-drive.selected {
-            background-color: #a88bcf !important;
-            color: #fff !important;
-            border-color: #a88bcf !important;
-        }
-
-        .btn-outline-student {
-            background-color: transparent;
-            color: #709e87;
-            border-color: #709e87;
-        }
-
-        .btn-outline-student:hover {
-            background-color: #84b39c;
-            color: var(--text-dark-gray);
-            border-color: #84b39c;
-        }
-
-        .btn-outline-student.active,
-        .btn-outline-student.selected {
-            background-color: #84b39c !important;
-            color: #fff !important;
-            border-color: #84b39c !important;
-        }
-
-        .btn-outline-danger {
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-
-        .btn-outline-danger:hover {
-            background-color: var(--danger);
-            color: var(--text-dark-gray);
-            border-color: var(--danger);
-        }
-
-        .btn-outline-danger:active,
-        .btn-outline-danger.active,
-        .btn-outline-danger.selected {
-            background-color: var(--danger) !important;
-            color: #fff !important;
-            border-color: var(--danger) !important;
-        }
-
-        .btn-company {
-            background-color: #7f9fc4;
-            border-color: #7f9fc4;
-            color: var(--text-white);
-        }
-
-        .btn-company:hover {
-            background-color: #6b8cb3;
-            border-color: #6b8cb3;
-            color: var(--text-dark-gray);
-        }
-
-        .btn-drive {
-            background-color: #a88bcf;
-            border-color: #a88bcf;
-            color: var(--text-white);
-        }
-
-        .btn-drive:hover {
-            background-color: #9575c1;
-            border-color: #9575c1;
-            color: var(--text-dark-gray);
-        }
-
-        .btn-student {
-            background-color: #84b39c;
-            border-color: #84b39c;
-            color: var(--text-white);
-        }
-
-        .btn-student:hover {
-            background-color: #709e87;
-            border-color: #709e87;
-            color: var(--text-dark-gray);
-        }
-
-        .card {
-            border: none;
-            border-radius: 10px;
-        }
-
-        .table-responsive {
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            height: 100%;
-        }
-
-        .stat-card .card-body {
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .stat-card h5 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark-gray);
-            font-weight: 700;
-        }
-
-        .stat-card h2 {
-            font-size: 2rem;
-            margin: 0;
-            font-weight: 700;
-            color: var(--text-dark-gray);
-        }
-
-        .card-students {
-            background-color: var(--card-student);
-        }
-
-        .card-companies {
-            background-color: var(--card-company);
-        }
-
-        .card-drives {
-            background-color: var(--card-drive);
-        }
-
-        .card-pending {
-            background-color: var(--card-pending);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #54B39A;
+      --secondary: #6092C1;
+      --accent: #D46087;
+      --tertiary: #8C7BB8;
+      --quaternary: #7FAFD4;
+      --success: #7FB8A4;
+      --warning: #E8A317;
+      --danger: #D97C6F;
+      --info: #6B8DAF;
+      --low: #7FB8A4;
+      --medium: #E8A317;
+      --high: #D97C6F;
+      --critical: #A30006;
+      --text-dark-gray: #2c3e50;
+      --text-white: #ffffff;
+      --card-student: #d4e9e2;
+      --card-company: #d6e2f0;
+      --card-drive: #e3d7f5;
+      --card-pending: #fbe8c6;
+    }
+
+    body {
+      background: #f8f9fa;
+      color: var(--text-dark-gray);
+    }
+
+    .navbar-admin {
+      background-color: #ffffff !important;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .navbar-admin .navbar-brand {
+      color: var(--primary) !important;
+      font-weight: 700;
+    }
+
+    .navbar-company {
+      background-color: #ffffff !important;
+      border-bottom: 2px solid var(--secondary);
+    }
+
+    .navbar-company .navbar-brand {
+      color: var(--secondary) !important;
+      font-weight: 700;
+    }
+
+    .navbar-student {
+      background-color: #ffffff !important;
+      border-bottom: 2px solid var(--tertiary);
+    }
+
+    .navbar-student .navbar-brand {
+      color: var(--tertiary) !important;
+      font-weight: 700;
+    }
+
+    .navbar-guest {
+      background-color: #ffffff !important;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .navbar-guest .navbar-brand {
+      color: var(--accent) !important;
+      font-weight: 700;
+    }
+
+    .navbar-guest .btn-outline-danger {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .navbar-guest .btn-outline-danger:hover {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background-color: #3e8b74;
+      border-color: #3e8b74;
+    }
+
+    .btn-primary:active,
+    .btn-primary:focus,
+    .btn-primary:focus-visible {
+      background-color: #2f6e5a !important;
+      border-color: #2f6e5a !important;
+      box-shadow: 0 0 0 0.2rem rgba(84, 179, 154, 0.3) !important;
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-accent:hover {
+      background-color: #b84a6e;
+      border-color: #b84a6e;
+      color: #fff;
+    }
+
+    .btn-accent:active,
+    .btn-accent:focus {
+      background-color: #9b3e5c !important;
+      border-color: #9b3e5c !important;
+      box-shadow: 0 0 0 0.2rem rgba(212, 96, 135, 0.3) !important;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background-color: #4a75a0;
+      border-color: #4a75a0;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .btn-success:hover {
+      background-color: #5d8c7a;
+      border-color: #5d8c7a;
+    }
+
+    .btn-warning {
+      background-color: var(--warning);
+      border-color: var(--warning);
+      color: #fff;
+    }
+
+    .btn-warning:hover {
+      background-color: #c48e14;
+      border-color: #c48e14;
+      color: #fff;
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .btn-danger:hover {
+      background-color: #b85d52;
+      border-color: #b85d52;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-secondary,
+    .btn-outline-success,
+    .btn-outline-danger,
+    .btn-outline-warning,
+    .btn-outline-info,
+    .btn-outline-company,
+    .btn-outline-drive,
+    .btn-outline-student {
+      background-color: transparent;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .btn-outline-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      color: var(--text-dark-gray);
+      border-color: var(--primary);
+    }
+
+    .btn-outline-primary:active,
+    .btn-outline-primary.active,
+    .btn-outline-primary.selected,
+    .btn-outline-primary:focus-visible {
+      background-color: var(--primary) !important;
+      color: #fff !important;
+      border-color: var(--primary) !important;
+    }
+
+    .btn-outline-success {
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .btn-outline-success:hover {
+      background-color: var(--success);
+      color: var(--text-dark-gray);
+      border-color: var(--success);
+    }
+
+    .btn-outline-success:active,
+    .btn-outline-success.active,
+    .btn-outline-success.selected {
+      background-color: var(--success) !important;
+      color: #fff !important;
+      border-color: var(--success) !important;
+    }
+
+    .btn-outline-info {
+      color: var(--info);
+      border-color: var(--info);
+    }
+
+    .btn-outline-info:hover {
+      background-color: var(--info);
+      color: var(--text-dark-gray);
+      border-color: var(--info);
+    }
+
+    .btn-outline-info:active,
+    .btn-outline-info.active,
+    .btn-outline-info.selected {
+      background-color: var(--info) !important;
+      color: #fff !important;
+      border-color: var(--info) !important;
+    }
+
+    .btn-outline-company {
+      background-color: transparent;
+      color: #6b8cb3;
+      border-color: #6b8cb3;
+    }
+
+    .btn-outline-company:hover {
+      background-color: #7f9fc4;
+      color: var(--text-dark-gray);
+      border-color: #7f9fc4;
+    }
+
+    .btn-outline-company.active,
+    .btn-outline-company.selected {
+      background-color: #7f9fc4 !important;
+      color: #fff !important;
+      border-color: #7f9fc4 !important;
+    }
+
+    .btn-outline-drive {
+      background-color: transparent;
+      color: #9575c1;
+      border-color: #9575c1;
+    }
+
+    .btn-outline-drive:hover {
+      background-color: #a88bcf;
+      color: var(--text-dark-gray);
+      border-color: #a88bcf;
+    }
+
+    .btn-outline-drive.active,
+    .btn-outline-drive.selected {
+      background-color: #a88bcf !important;
+      color: #fff !important;
+      border-color: #a88bcf !important;
+    }
+
+    .btn-outline-student {
+      background-color: transparent;
+      color: #709e87;
+      border-color: #709e87;
+    }
+
+    .btn-outline-student:hover {
+      background-color: #84b39c;
+      color: var(--text-dark-gray);
+      border-color: #84b39c;
+    }
+
+    .btn-outline-student.active,
+    .btn-outline-student.selected {
+      background-color: #84b39c !important;
+      color: #fff !important;
+      border-color: #84b39c !important;
+    }
+
+    .btn-outline-danger {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .btn-outline-danger:hover {
+      background-color: var(--danger);
+      color: var(--text-dark-gray);
+      border-color: var(--danger);
+    }
+
+    .btn-outline-danger:active,
+    .btn-outline-danger.active,
+    .btn-outline-danger.selected {
+      background-color: var(--danger) !important;
+      color: #fff !important;
+      border-color: var(--danger) !important;
+    }
+
+    .btn-company {
+      background-color: #7f9fc4;
+      border-color: #7f9fc4;
+      color: var(--text-white);
+    }
+
+    .btn-company:hover {
+      background-color: #6b8cb3;
+      border-color: #6b8cb3;
+      color: var(--text-dark-gray);
+    }
+
+    .btn-drive {
+      background-color: #a88bcf;
+      border-color: #a88bcf;
+      color: var(--text-white);
+    }
+
+    .btn-drive:hover {
+      background-color: #9575c1;
+      border-color: #9575c1;
+      color: var(--text-dark-gray);
+    }
+
+    .btn-student {
+      background-color: #84b39c;
+      border-color: #84b39c;
+      color: var(--text-white);
+    }
+
+    .btn-student:hover {
+      background-color: #709e87;
+      border-color: #709e87;
+      color: var(--text-dark-gray);
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+    }
+
+    .table-responsive {
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      height: 100%;
+    }
+
+    .stat-card .card-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stat-card h5 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark-gray);
+      font-weight: 700;
+    }
+
+    .stat-card h2 {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: 700;
+      color: var(--text-dark-gray);
+    }
+
+    .card-students {
+      background-color: var(--card-student);
+    }
+
+    .card-companies {
+      background-color: var(--card-company);
+    }
+
+    .card-drives {
+      background-color: var(--card-drive);
+    }
+
+    .card-pending {
+      background-color: var(--card-pending);
+    }
+  </style>
 </head>
 
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light shadow-sm" :class="navbarClass" v-if="true">
-            <div class="container">
-                <a class="navbar-brand" href="#">Placement Portal</a>
-                <div class="navbar-nav ms-auto">
-                    <button v-if="token" class="btn btn-sm btn-outline-danger" @click="logout">Logout</button>
-                </div>
-            </div>
-        </nav>
-        <div class="container mt-4">
-            <router-view></router-view>
+  <div id="app">
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm" :class="navbarClass" v-if="true">
+      <div class="container">
+        <a class="navbar-brand" href="#">Placement Portal</a>
+        <div class="navbar-nav ms-auto">
+          <button v-if="token" class="btn btn-sm btn-outline-danger" @click="logout">Logout</button>
         </div>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      <router-view></router-view>
     </div>
+  </div>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        {% raw %}
-        const { createApp, ref, computed } = Vue;
-        const { createRouter, createWebHashHistory } = VueRouter;
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    {% raw %}
+    const { createApp, ref, computed } = Vue;
+    const { createRouter, createWebHashHistory } = VueRouter;
 
-        axios.interceptors.request.use(config => {
-            const token = localStorage.getItem('token');
-            if (token) config.headers.Authorization = `Bearer ${token}`;
-            return config;
-        });
+    axios.interceptors.request.use(config => {
+      const token = localStorage.getItem('token');
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    });
 
-        const Login = {
-            template: `
+    const Login = {
+      template: `
       <div class="row justify-content-center">
         <div class="col-md-4">
           <div class="card p-4 shadow-sm">
             <h3 class="text-center" style="color: var(--accent);">Login</h3>
             <form @submit.prevent="doLogin">
-              <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
-              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <div class="mb-3"><input v-model="email" type="email" class="form-control" placeholder="Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required minlength="6"></div>
               <button type="submit" class="btn btn-accent w-100">Login</button>
             </form>
             <p class="mt-3 text-center">New student? <router-link to="/register/student">Register</router-link></p>
@@ -451,68 +451,76 @@
           </div>
         </div>
       </div>`,
-            data() { return { email: '', password: '' }; },
-            methods: {
-                async doLogin() {
-                    try {
-                        const res = await axios.post('/api/login', { email: this.email, password: this.password });
-                        localStorage.setItem('token', res.data.access_token);
-                        localStorage.setItem('role', res.data.role);
-                        this.$root.updateAuth();
-                        this.$router.push('/' + res.data.role);
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Login failed');
-                    }
-                }
-            }
-        };
+      data() { return { email: '', password: '' }; },
+      methods: {
+        async doLogin() {
+          try {
+            const res = await axios.post('/api/login', { email: this.email, password: this.password });
+            localStorage.setItem('token', res.data.access_token);
+            localStorage.setItem('role', res.data.role);
+            this.$root.updateAuth();
+            this.$router.push('/' + res.data.role);
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Login failed');
+          }
+        }
+      }
+    };
 
-        const RegisterStudent = {
-            template: `
+    const RegisterStudent = {
+      template: `
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card p-4 shadow-sm">
             <h3 style="color: var(--accent);">Student Registration</h3>
             <form @submit.prevent="register">
               <div class="mb-3"><input v-model="name" class="form-control" placeholder="Full Name" required></div>
-              <div class="mb-3"><input v-model="email" class="form-control" placeholder="Email" required></div>
-              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <div class="mb-3"><input v-model="email" type="email" class="form-control" placeholder="Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required minlength="6"></div>
               <div class="mb-3"><input v-model="roll" class="form-control" placeholder="Roll Number"></div>
               <div class="mb-3"><input v-model="branch" class="form-control" placeholder="Branch"></div>
-              <div class="mb-3"><input v-model="cgpa" class="form-control" placeholder="CGPA" type="number" step="0.1"></div>
-              <div class="mb-3"><input v-model="year" class="form-control" placeholder="Graduation Year" type="number"></div>
+              <div class="mb-3"><input v-model="cgpa" class="form-control" placeholder="CGPA" type="number" step="0.01" min="0" max="10"></div>
+              <div class="mb-3"><input v-model="year" class="form-control" placeholder="Graduation Year" type="number" min="2000" max="2099"></div>
               <button class="btn btn-accent w-100">Register</button>
             </form>
             <p class="mt-3 text-center">Already have an account? <router-link to="/">Login</router-link></p>
           </div>
         </div>
       </div>`,
-            data() { return { name: '', email: '', password: '', roll: '', branch: '', cgpa: '', year: '' }; },
-            methods: {
-                async register() {
-                    try {
-                        await axios.post('/api/register/student', {
-                            name: this.name, email: this.email, password: this.password,
-                            roll_number: this.roll, branch: this.branch, cgpa: parseFloat(this.cgpa),
-                            year: parseInt(this.year)
-                        });
-                        alert('Registration successful. Please login.');
-                        this.$router.push('/');
-                    } catch (e) { alert(e.response?.data?.msg); }
-                }
-            }
-        };
+      data() { return { name: '', email: '', password: '', roll: '', branch: '', cgpa: '', year: '' }; },
+      methods: {
+        async register() {
+          if (this.cgpa && (isNaN(parseFloat(this.cgpa)) || parseFloat(this.cgpa) < 0 || parseFloat(this.cgpa) > 10)) {
+            alert("CGPA must be between 0 and 10");
+            return;
+          }
+          if (this.year && (isNaN(parseInt(this.year)) || parseInt(this.year) < 2000)) {
+            alert("Invalid graduation year");
+            return;
+          }
+          try {
+            await axios.post('/api/register/student', {
+              name: this.name, email: this.email, password: this.password,
+              roll_number: this.roll, branch: this.branch, cgpa: parseFloat(this.cgpa) || null,
+              year: parseInt(this.year) || null
+            });
+            alert('Registration successful. Please login.');
+            this.$router.push('/');
+          } catch (e) { alert(e.response?.data?.msg || 'Error'); }
+        }
+      }
+    };
 
-        const RegisterCompany = {
-            template: `
+    const RegisterCompany = {
+      template: `
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card p-4 shadow-sm">
             <h3 style="color: var(--accent);">Company Registration</h3>
             <form @submit.prevent="register">
               <div class="mb-3"><input v-model="name" class="form-control" placeholder="Company Name" required></div>
-              <div class="mb-3"><input v-model="email" class="form-control" placeholder="HR Email" required></div>
-              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required></div>
+              <div class="mb-3"><input v-model="email" type="email" class="form-control" placeholder="HR Email" required></div>
+              <div class="mb-3"><input v-model="password" type="password" class="form-control" placeholder="Password" required minlength="6"></div>
               <div class="mb-3"><input v-model="industry" class="form-control" placeholder="Industry"></div>
               <div class="mb-3"><input v-model="location" class="form-control" placeholder="Location"></div>
               <div class="mb-3"><textarea v-model="desc" class="form-control" placeholder="Description"></textarea></div>
@@ -522,23 +530,23 @@
           </div>
         </div>
       </div>`,
-            data() { return { name: '', email: '', password: '', industry: '', location: '', desc: '' }; },
-            methods: {
-                async register() {
-                    try {
-                        await axios.post('/api/register/company', {
-                            name: this.name, email: this.email, password: this.password,
-                            industry: this.industry, location: this.location, description: this.desc
-                        });
-                        alert('Company registered. Await admin approval.');
-                        this.$router.push('/');
-                    } catch (e) { alert(e.response?.data?.msg); }
-                }
-            }
-        };
+      data() { return { name: '', email: '', password: '', industry: '', location: '', desc: '' }; },
+      methods: {
+        async register() {
+          try {
+            await axios.post('/api/register/company', {
+              name: this.name, email: this.email, password: this.password,
+              industry: this.industry, location: this.location, description: this.desc
+            });
+            alert('Company registered. Await admin approval.');
+            this.$router.push('/');
+          } catch (e) { alert(e.response?.data?.msg || 'Error'); }
+        }
+      }
+    };
 
-        const AdminDashboard = {
-            template: `
+    const AdminDashboard = {
+      template: `
         <div>
           <h2 style="color: var(--primary);">Admin Dashboard</h2>
           <div class="row">
@@ -792,157 +800,157 @@
             </div>
           </div>
         </div>`,
-            data() {
-                return {
-                    stats: { total_students: 0, total_companies: 0, total_drives: 0, pending_companies: 0, pending_drives: 0 },
-                    companies: [], drives: [], students: [],
-                    view: 'companies',
-                    companySearch: '', companyFilter: 'all',
-                    driveSearch: '', driveFilter: 'all',
-                    studentSearch: '', studentFilter: 'all',
-                    selectedCompany: null,
-                    companyDrives: [],
-                    selectedDriveId: null,
-                    selectedDriveApplicants: [],
-                    selectedDriveDetail: null,
-                    selectedDriveApplications: [],
-                    selectedStudent: null,
-                    studentApplications: []
-                };
-            },
-            computed: {
-                filteredCompanies() {
-                    let result = this.companies;
-                    if (this.companySearch) {
-                        result = result.filter(c =>
-                            c.name.toLowerCase().includes(this.companySearch.toLowerCase())
-                        );
-                    }
-                    return result;
-                },
-                filteredStudents() {
-                    let result = this.students;
-                    if (this.studentSearch) {
-                        result = result.filter(s =>
-                            s.name.toLowerCase().includes(this.studentSearch.toLowerCase()) ||
-                            s.roll_number.toLowerCase().includes(this.studentSearch.toLowerCase())
-                        );
-                    }
-                    return result;
-                }
-            },
-            watch: {
-                companyFilter() { this.fetchCompanies(); },
-                driveFilter() { this.fetchDrives(); },
-                driveSearch() { this.fetchDrives(); },
-                studentFilter() { this.fetchStudents(); },
-                studentSearch() { this.fetchStudents(); }
-            },
-            async mounted() {
-                await this.fetchStats();
-                this.fetchCompanies();
-                this.fetchDrives();
-                this.fetchStudents();
-            },
-            methods: {
-                capitalize(str) {
-                    if (!str) return '';
-                    return str.charAt(0).toUpperCase() + str.slice(1);
-                },
-                async fetchStats() {
-                    const { data } = await axios.get('/api/admin/dashboard');
-                    this.stats = data;
-                },
-                async fetchCompanies() {
-                    const params = { filter: this.companyFilter };
-                    if (this.companySearch) params.q = this.companySearch;
-                    const { data } = await axios.get('/api/admin/companies', { params });
-                    this.companies = data;
-                },
-                async fetchDrives() {
-                    const params = { filter: this.driveFilter };
-                    if (this.driveSearch) params.q = this.driveSearch;
-                    const { data } = await axios.get('/api/admin/drives', { params });
-                    this.drives = data;
-                },
-                async fetchStudents() {
-                    const params = { filter: this.studentFilter };
-                    if (this.studentSearch) params.q = this.studentSearch;
-                    const { data } = await axios.get('/api/admin/students', { params });
-                    this.students = data;
-                },
-                async approveCompany(id) {
-                    await axios.put(`/api/admin/companies/${id}/approve`);
-                    this.fetchCompanies();
-                    this.fetchStats();
-                },
-                async rejectCompany(id) {
-                    if (confirm('Are you sure you want to reject this company?')) {
-                        await axios.delete(`/api/admin/companies/${id}/reject`);
-                        this.fetchCompanies();
-                        this.fetchStats();
-                    }
-                },
-                async toggleCompanyActive(id) {
-                    await axios.put(`/api/admin/companies/${id}/toggle-active`);
-                    this.fetchCompanies();
-                },
-                async approveDrive(id) {
-                    await axios.put(`/api/admin/drives/${id}/approve`);
-                    this.fetchDrives();
-                    this.fetchStats();
-                },
-                async closeDrive(id) {
-                    await axios.put(`/api/admin/drives/${id}/close`);
-                    this.fetchDrives();
-                },
-                async toggleStudentActive(id) {
-                    await axios.put(`/api/admin/students/${id}/toggle-active`);
-                    this.fetchStudents();
-                    this.fetchStats();
-                },
-                async viewCompanyDetails(companyId) {
-                    const { data } = await axios.get(`/api/admin/companies/${companyId}`);
-                    this.selectedCompany = data;
-                    const drivesRes = await axios.get(`/api/admin/companies/${companyId}/drives`);
-                    this.companyDrives = drivesRes.data;
-                    this.selectedDriveApplicants = [];
-                    this.selectedDriveId = null;
-                },
-                async viewDriveApplications(driveId) {
-                    this.selectedDriveId = driveId;
-                    const { data } = await axios.get(`/api/admin/drives/${driveId}/applications`);
-                    this.selectedDriveApplicants = data;
-                },
-                async viewDriveDetail(driveId) {
-                    const { data } = await axios.get(`/api/admin/drives/${driveId}`);
-                    this.selectedDriveDetail = data;
-                    const appsRes = await axios.get(`/api/admin/drives/${driveId}/applications`);
-                    this.selectedDriveApplications = appsRes.data;
-                },
-                async viewStudentDetails(studentId) {
-                    const { data } = await axios.get(`/api/admin/students/${studentId}`);
-                    this.selectedStudent = data;
-                    const appsRes = await axios.get(`/api/admin/students/${studentId}/applications`);
-                    this.studentApplications = appsRes.data;
-                },
-                resetCompanyFilters() {
-                    this.companySearch = '';
-                    this.companyFilter = 'all';
-                },
-                resetDriveFilters() {
-                    this.driveSearch = '';
-                    this.driveFilter = 'all';
-                },
-                resetStudentFilters() {
-                    this.studentSearch = '';
-                    this.studentFilter = 'all';
-                }
-            }
+      data() {
+        return {
+          stats: { total_students: 0, total_companies: 0, total_drives: 0, pending_companies: 0, pending_drives: 0 },
+          companies: [], drives: [], students: [],
+          view: 'companies',
+          companySearch: '', companyFilter: 'all',
+          driveSearch: '', driveFilter: 'all',
+          studentSearch: '', studentFilter: 'all',
+          selectedCompany: null,
+          companyDrives: [],
+          selectedDriveId: null,
+          selectedDriveApplicants: [],
+          selectedDriveDetail: null,
+          selectedDriveApplications: [],
+          selectedStudent: null,
+          studentApplications: []
         };
+      },
+      computed: {
+        filteredCompanies() {
+          let result = this.companies;
+          if (this.companySearch) {
+            result = result.filter(c =>
+              c.name.toLowerCase().includes(this.companySearch.toLowerCase())
+            );
+          }
+          return result;
+        },
+        filteredStudents() {
+          let result = this.students;
+          if (this.studentSearch) {
+            result = result.filter(s =>
+              s.name.toLowerCase().includes(this.studentSearch.toLowerCase()) ||
+              s.roll_number.toLowerCase().includes(this.studentSearch.toLowerCase())
+            );
+          }
+          return result;
+        }
+      },
+      watch: {
+        companyFilter() { this.fetchCompanies(); },
+        driveFilter() { this.fetchDrives(); },
+        driveSearch() { this.fetchDrives(); },
+        studentFilter() { this.fetchStudents(); },
+        studentSearch() { this.fetchStudents(); }
+      },
+      async mounted() {
+        await this.fetchStats();
+        this.fetchCompanies();
+        this.fetchDrives();
+        this.fetchStudents();
+      },
+      methods: {
+        capitalize(str) {
+          if (!str) return '';
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+        async fetchStats() {
+          const { data } = await axios.get('/api/admin/dashboard');
+          this.stats = data;
+        },
+        async fetchCompanies() {
+          const params = { filter: this.companyFilter };
+          if (this.companySearch) params.q = this.companySearch;
+          const { data } = await axios.get('/api/admin/companies', { params });
+          this.companies = data;
+        },
+        async fetchDrives() {
+          const params = { filter: this.driveFilter };
+          if (this.driveSearch) params.q = this.driveSearch;
+          const { data } = await axios.get('/api/admin/drives', { params });
+          this.drives = data;
+        },
+        async fetchStudents() {
+          const params = { filter: this.studentFilter };
+          if (this.studentSearch) params.q = this.studentSearch;
+          const { data } = await axios.get('/api/admin/students', { params });
+          this.students = data;
+        },
+        async approveCompany(id) {
+          await axios.put(`/api/admin/companies/${id}/approve`);
+          this.fetchCompanies();
+          this.fetchStats();
+        },
+        async rejectCompany(id) {
+          if (confirm('Are you sure you want to reject this company?')) {
+            await axios.delete(`/api/admin/companies/${id}/reject`);
+            this.fetchCompanies();
+            this.fetchStats();
+          }
+        },
+        async toggleCompanyActive(id) {
+          await axios.put(`/api/admin/companies/${id}/toggle-active`);
+          this.fetchCompanies();
+        },
+        async approveDrive(id) {
+          await axios.put(`/api/admin/drives/${id}/approve`);
+          this.fetchDrives();
+          this.fetchStats();
+        },
+        async closeDrive(id) {
+          await axios.put(`/api/admin/drives/${id}/close`);
+          this.fetchDrives();
+        },
+        async toggleStudentActive(id) {
+          await axios.put(`/api/admin/students/${id}/toggle-active`);
+          this.fetchStudents();
+          this.fetchStats();
+        },
+        async viewCompanyDetails(companyId) {
+          const { data } = await axios.get(`/api/admin/companies/${companyId}`);
+          this.selectedCompany = data;
+          const drivesRes = await axios.get(`/api/admin/companies/${companyId}/drives`);
+          this.companyDrives = drivesRes.data;
+          this.selectedDriveApplicants = [];
+          this.selectedDriveId = null;
+        },
+        async viewDriveApplications(driveId) {
+          this.selectedDriveId = driveId;
+          const { data } = await axios.get(`/api/admin/drives/${driveId}/applications`);
+          this.selectedDriveApplicants = data;
+        },
+        async viewDriveDetail(driveId) {
+          const { data } = await axios.get(`/api/admin/drives/${driveId}`);
+          this.selectedDriveDetail = data;
+          const appsRes = await axios.get(`/api/admin/drives/${driveId}/applications`);
+          this.selectedDriveApplications = appsRes.data;
+        },
+        async viewStudentDetails(studentId) {
+          const { data } = await axios.get(`/api/admin/students/${studentId}`);
+          this.selectedStudent = data;
+          const appsRes = await axios.get(`/api/admin/students/${studentId}/applications`);
+          this.studentApplications = appsRes.data;
+        },
+        resetCompanyFilters() {
+          this.companySearch = '';
+          this.companyFilter = 'all';
+        },
+        resetDriveFilters() {
+          this.driveSearch = '';
+          this.driveFilter = 'all';
+        },
+        resetStudentFilters() {
+          this.studentSearch = '';
+          this.studentFilter = 'all';
+        }
+      }
+    };
 
-        const CompanyDashboard = {
-            template: `
+    const CompanyDashboard = {
+      template: `
         <div>
           <h2 style="color: var(--secondary);">{{ companyName }}</h2>
           <div v-if="!approved" class="alert alert-warning">Your company registration is pending approval. You will be able to create drives after approval.</div>
@@ -962,7 +970,7 @@
                 <div class="mb-3"><textarea v-model="newDrive.description" class="form-control" placeholder="Job Description"></textarea></div>
                 <div class="row">
                   <div class="col-md-4"><input v-model="newDrive.branch" class="form-control" placeholder="Eligible Branches (comma separated, e.g. CS,EE)"></div>
-                  <div class="col-md-4"><input v-model="newDrive.cgpa_min" type="number" step="0.1" class="form-control" placeholder="Minimum CGPA"></div>
+                  <div class="col-md-4"><input v-model="newDrive.cgpa_min" type="number" step="0.01" min="0" max="10" class="form-control" placeholder="Minimum CGPA"></div>
                   <div class="col-md-4"><input v-model="newDrive.year" class="form-control" placeholder="Eligible Years (comma separated, e.g. 2024,2025)"></div>
                 </div>
                 <div class="mt-3"><input v-model="newDrive.deadline" type="datetime-local" class="form-control"></div>
@@ -1049,7 +1057,7 @@
               <div class="mb-3"><textarea v-model="editingDrive.description" class="form-control" placeholder="Job Description"></textarea></div>
               <div class="row">
                 <div class="col-md-4"><input v-model="editingDrive.branch" class="form-control" placeholder="Eligible Branches"></div>
-                <div class="col-md-4"><input v-model="editingDrive.cgpa_min" type="number" step="0.1" class="form-control" placeholder="Minimum CGPA"></div>
+                <div class="col-md-4"><input v-model="editingDrive.cgpa_min" type="number" step="0.01" min="0" max="10" class="form-control" placeholder="Minimum CGPA"></div>
                 <div class="col-md-4"><input v-model="editingDrive.year" class="form-control" placeholder="Eligible Years"></div>
               </div>
               <div class="mt-3"><input v-model="editingDrive.deadline" type="datetime-local" class="form-control"></div>
@@ -1058,131 +1066,140 @@
             </form>
           </div>
         </div>`,
-            data() {
-                return {
-                    companyName: '',
-                    approved: false,
-                    activeDrives: [],
-                    closedDrives: [],
-                    showCreate: false,
-                    newDrive: { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' },
-                    selectedDrive: null,
-                    applicants: [],
-                    showEdit: false,
-                    editingDrive: {}
-                };
-            },
-            async mounted() {
-                await this.fetchDashboard();
-            },
-            methods: {
-                capitalize(str) {
-                    if (!str) return '';
-                    return str.charAt(0).toUpperCase() + str.slice(1);
-                },
-                async fetchDashboard() {
-                    try {
-                        const res = await axios.get('/api/company/dashboard');
-                        this.companyName = res.data.company_name;
-                        this.approved = res.data.approved;
-                        this.activeDrives = res.data.active_drives;
-                        this.closedDrives = res.data.closed_drives;
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error fetching dashboard');
-                    }
-                },
-                async createDrive() {
-                    try {
-                        const deadline = this.newDrive.deadline ? new Date(this.newDrive.deadline).toISOString() : null;
-                        await axios.post('/api/company/drives', {
-                            title: this.newDrive.title,
-                            description: this.newDrive.description,
-                            branch: this.newDrive.branch,
-                            cgpa_min: parseFloat(this.newDrive.cgpa_min) || null,
-                            year: this.newDrive.year,
-                            deadline: deadline
-                        });
-                        alert('Drive created, pending approval');
-                        this.newDrive = { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' };
-                        this.showCreate = false;
-                        this.fetchDashboard();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error creating drive');
-                    }
-                },
-                editDrive(drive) {
-                    this.editingDrive = {
-                        p_id: drive.p_id,
-                        title: drive.title,
-                        description: drive.description || '',
-                        branch: drive.branch || '',
-                        cgpa_min: drive.cgpa_min || '',
-                        year: drive.year || '',
-                        deadline: drive.deadline ? drive.deadline.substring(0, 16) : ''
-                    };
-                    this.showEdit = true;
-                },
-                async updateDrive() {
-                    try {
-                        const payload = {
-                            title: this.editingDrive.title,
-                            description: this.editingDrive.description,
-                            branch: this.editingDrive.branch,
-                            cgpa_min: parseFloat(this.editingDrive.cgpa_min) || null,
-                            year: this.editingDrive.year,
-                            deadline: this.editingDrive.deadline ? new Date(this.editingDrive.deadline).toISOString() : null
-                        };
-                        await axios.put(`/api/company/drives/${this.editingDrive.p_id}`, payload);
-                        alert('Drive updated');
-                        this.showEdit = false;
-                        this.fetchDashboard();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error updating drive');
-                    }
-                },
-                async deleteDrive(driveId) {
-                    if (!confirm('Are you sure you want to delete this drive?')) return;
-                    try {
-                        await axios.delete(`/api/company/drives/${driveId}`);
-                        alert('Drive deleted');
-                        this.fetchDashboard();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error deleting drive');
-                    }
-                },
-                async viewApplicants(drive) {
-                    this.selectedDrive = drive;
-                    try {
-                        const res = await axios.get(`/api/company/drives/${drive.p_id}/applications`);
-                        this.applicants = res.data.map(a => ({ ...a, newStatus: '' }));
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error fetching applicants');
-                        this.selectedDrive = null;
-                    }
-                },
-                async updateStatus(applicant) {
-                    if (!applicant.newStatus) return;
-                    try {
-                        await axios.put(`/api/company/applications/${applicant.a_id}`, { status: applicant.newStatus });
-                        alert('Status updated');
-                        this.viewApplicants(this.selectedDrive);
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error updating status');
-                    }
-                },
-                async toggleDriveStatus(driveId) {
-                    try {
-                        await axios.put(`/api/company/drives/${driveId}/toggle-status`);
-                        this.fetchDashboard();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error toggling drive status');
-                    }
-                }
-            }
+      data() {
+        return {
+          companyName: '',
+          approved: false,
+          activeDrives: [],
+          closedDrives: [],
+          showCreate: false,
+          newDrive: { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' },
+          selectedDrive: null,
+          applicants: [],
+          showEdit: false,
+          editingDrive: {}
         };
+      },
+      async mounted() {
+        await this.fetchDashboard();
+      },
+      methods: {
+        capitalize(str) {
+          if (!str) return '';
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+        async fetchDashboard() {
+          try {
+            const res = await axios.get('/api/company/dashboard');
+            this.companyName = res.data.company_name;
+            this.approved = res.data.approved;
+            this.activeDrives = res.data.active_drives;
+            this.closedDrives = res.data.closed_drives;
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error fetching dashboard');
+          }
+        },
+        async createDrive() {
+          if (!this.newDrive.title) { alert('Job title is required'); return; }
+          const cgpa = parseFloat(this.newDrive.cgpa_min);
+          if (this.newDrive.cgpa_min && (isNaN(cgpa) || cgpa < 0 || cgpa > 10)) {
+            alert('CGPA min must be between 0 and 10'); return;
+          }
+          try {
+            const deadline = this.newDrive.deadline ? new Date(this.newDrive.deadline).toISOString() : null;
+            await axios.post('/api/company/drives', {
+              title: this.newDrive.title,
+              description: this.newDrive.description,
+              branch: this.newDrive.branch,
+              cgpa_min: cgpa || null,
+              year: this.newDrive.year,
+              deadline: deadline
+            });
+            alert('Drive created, pending approval');
+            this.newDrive = { title: '', description: '', branch: '', cgpa_min: '', year: '', deadline: '' };
+            this.showCreate = false;
+            this.fetchDashboard();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error creating drive');
+          }
+        },
+        editDrive(drive) {
+          this.editingDrive = {
+            p_id: drive.p_id,
+            title: drive.title,
+            description: drive.description || '',
+            branch: drive.branch || '',
+            cgpa_min: drive.cgpa_min || '',
+            year: drive.year || '',
+            deadline: drive.deadline ? drive.deadline.substring(0, 16) : ''
+          };
+          this.showEdit = true;
+        },
+        async updateDrive() {
+          const cgpa = parseFloat(this.editingDrive.cgpa_min);
+          if (this.editingDrive.cgpa_min && (isNaN(cgpa) || cgpa < 0 || cgpa > 10)) {
+            alert('CGPA min must be between 0 and 10'); return;
+          }
+          try {
+            const payload = {
+              title: this.editingDrive.title,
+              description: this.editingDrive.description,
+              branch: this.editingDrive.branch,
+              cgpa_min: cgpa || null,
+              year: this.editingDrive.year,
+              deadline: this.editingDrive.deadline ? new Date(this.editingDrive.deadline).toISOString() : null
+            };
+            await axios.put(`/api/company/drives/${this.editingDrive.p_id}`, payload);
+            alert('Drive updated');
+            this.showEdit = false;
+            this.fetchDashboard();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error updating drive');
+          }
+        },
+        async deleteDrive(driveId) {
+          if (!confirm('Are you sure you want to delete this drive?')) return;
+          try {
+            await axios.delete(`/api/company/drives/${driveId}`);
+            alert('Drive deleted');
+            this.fetchDashboard();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error deleting drive');
+          }
+        },
+        async viewApplicants(drive) {
+          this.selectedDrive = drive;
+          try {
+            const res = await axios.get(`/api/company/drives/${drive.p_id}/applications`);
+            this.applicants = res.data.map(a => ({ ...a, newStatus: '' }));
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error fetching applicants');
+            this.selectedDrive = null;
+          }
+        },
+        async updateStatus(applicant) {
+          if (!applicant.newStatus) return;
+          try {
+            await axios.put(`/api/company/applications/${applicant.a_id}`, { status: applicant.newStatus });
+            alert('Status updated');
+            this.viewApplicants(this.selectedDrive);
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error updating status');
+          }
+        },
+        async toggleDriveStatus(driveId) {
+          try {
+            await axios.put(`/api/company/drives/${driveId}/toggle-status`);
+            this.fetchDashboard();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error toggling drive status');
+          }
+        }
+      }
+    };
 
-        const StudentDashboard = {
-            template: `
+    const StudentDashboard = {
+      template: `
         <div>
           <h2 style="color: var(--tertiary);">Welcome, {{ studentName }}</h2>
           <div class="row mt-3">
@@ -1212,6 +1229,9 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="text-end mt-2 mb-3">
+            <button class="btn btn-sm btn-accent" @click="exportCSV">Export Applications CSV</button>
           </div>
 
           <hr>
@@ -1249,133 +1269,145 @@
               <div class="mb-3"><input v-model="editProfile.name" class="form-control" placeholder="Name"></div>
               <div class="mb-3"><input v-model="editProfile.roll_number" class="form-control" placeholder="Roll Number"></div>
               <div class="mb-3"><input v-model="editProfile.branch" class="form-control" placeholder="Branch"></div>
-              <div class="mb-3"><input v-model="editProfile.cgpa" type="number" step="0.1" class="form-control" placeholder="CGPA"></div>
-              <div class="mb-3"><input v-model="editProfile.year" type="number" class="form-control" placeholder="Year"></div>
+              <div class="mb-3"><input v-model="editProfile.cgpa" type="number" step="0.01" min="0" max="10" class="form-control" placeholder="CGPA"></div>
+              <div class="mb-3"><input v-model="editProfile.year" type="number" min="2000" max="2099" class="form-control" placeholder="Year"></div>
               <div class="mb-3"><input v-model="editProfile.skills" class="form-control" placeholder="Skills (comma separated)"></div>
               <button type="submit" class="btn btn-success">Save</button>
               <button class="btn btn-secondary ms-2" @click="showEditProfile = false">Cancel</button>
             </form>
           </div>
         </div>`,
-            data() {
-                return {
-                    studentName: '',
-                    eligibleDrives: [],
-                    applications: [],
-                    history: [],
-                    profile: {},
-                    showEditProfile: false,
-                    editProfile: {}
-                };
-            },
-            async mounted() {
-                await this.fetchDashboard();
-                this.fetchApplications();
-                this.fetchHistory();
-                this.fetchProfile();
-            },
-            methods: {
-                capitalize(str) {
-                    if (!str) return '';
-                    return str.charAt(0).toUpperCase() + str.slice(1);
-                },
-                async fetchDashboard() {
-                    const res = await axios.get('/api/student/dashboard');
-                    this.studentName = res.data.student_name;
-                    this.eligibleDrives = res.data.drives;
-                },
-                async fetchApplications() {
-                    const res = await axios.get('/api/student/applications');
-                    this.applications = res.data;
-                },
-                async fetchHistory() {
-                    const res = await axios.get('/api/student/history');
-                    this.history = res.data;
-                },
-                async fetchProfile() {
-                    const res = await axios.get('/api/student/profile');
-                    this.profile = res.data;
-                    this.editProfile = { ...res.data };
-                },
-                async applyDrive(driveId) {
-                    try {
-                        await axios.post(`/api/student/apply/${driveId}`);
-                        alert('Application submitted');
-                        this.fetchDashboard();
-                        this.fetchApplications();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error applying');
-                    }
-                },
-                async updateProfile() {
-                    try {
-                        await axios.put('/api/student/profile', this.editProfile);
-                        alert('Profile updated');
-                        this.showEditProfile = false;
-                        this.fetchProfile();
-                    } catch (e) {
-                        alert(e.response?.data?.msg || 'Error updating profile');
-                    }
-                }
-            }
+      data() {
+        return {
+          studentName: '',
+          eligibleDrives: [],
+          applications: [],
+          history: [],
+          profile: {},
+          showEditProfile: false,
+          editProfile: {}
         };
+      },
+      async mounted() {
+        await this.fetchDashboard();
+        this.fetchApplications();
+        this.fetchHistory();
+        this.fetchProfile();
+      },
+      methods: {
+        capitalize(str) {
+          if (!str) return '';
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+        async fetchDashboard() {
+          const res = await axios.get('/api/student/dashboard');
+          this.studentName = res.data.student_name;
+          this.eligibleDrives = res.data.drives;
+        },
+        async fetchApplications() {
+          const res = await axios.get('/api/student/applications');
+          this.applications = res.data;
+        },
+        async fetchHistory() {
+          const res = await axios.get('/api/student/history');
+          this.history = res.data;
+        },
+        async fetchProfile() {
+          const res = await axios.get('/api/student/profile');
+          this.profile = res.data;
+          this.editProfile = { ...res.data };
+        },
+        async applyDrive(driveId) {
+          try {
+            await axios.post(`/api/student/apply/${driveId}`);
+            alert('Application submitted');
+            this.fetchDashboard();
+            this.fetchApplications();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error applying');
+          }
+        },
+        async updateProfile() {
+          const cgpa = parseFloat(this.editProfile.cgpa);
+          if (this.editProfile.cgpa && (isNaN(cgpa) || cgpa < 0 || cgpa > 10)) {
+            alert('CGPA must be between 0 and 10'); return;
+          }
+          try {
+            await axios.put('/api/student/profile', this.editProfile);
+            alert('Profile updated');
+            this.showEditProfile = false;
+            this.fetchProfile();
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Error updating profile');
+          }
+        },
+        async exportCSV() {
+          try {
+            await axios.post('/api/student/export-csv');
+            alert('CSV export started. You will receive an email shortly.');
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Export failed');
+          }
+        }
+      }
+    };
 
 
-        const routes = [
-            { path: '/', component: Login },
-            { path: '/register/student', component: RegisterStudent },
-            { path: '/register/company', component: RegisterCompany },
-            { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
-            { path: '/company', component: CompanyDashboard, meta: { role: 'company' } },
-            { path: '/student', component: StudentDashboard, meta: { role: 'student' } },
-        ];
+    const routes = [
+      { path: '/', component: Login },
+      { path: '/register/student', component: RegisterStudent },
+      { path: '/register/company', component: RegisterCompany },
+      { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
+      { path: '/company', component: CompanyDashboard, meta: { role: 'company' } },
+      { path: '/student', component: StudentDashboard, meta: { role: 'student' } },
+    ];
 
-        const router = createRouter({ history: createWebHashHistory(), routes });
+    const router = createRouter({ history: createWebHashHistory(), routes });
 
-        router.beforeEach((to, from, next) => {
-            const role = localStorage.getItem('role');
-            if (to.meta.role && role !== to.meta.role) {
-                next('/');
-            } else {
-                next();
-            }
-        });
+    router.beforeEach((to, from, next) => {
+      const role = localStorage.getItem('role');
+      if (to.meta.role && role !== to.meta.role) {
+        next('/');
+      } else {
+        next();
+      }
+    });
 
-        const app = createApp({
-            data() {
-                return {
-                    token: localStorage.getItem('token'),
-                    role: localStorage.getItem('role') || ''
-                };
-            },
-            computed: {
-                navbarClass() {
-                    if (!this.token) return 'navbar-guest';
-                    if (this.role === 'admin') return 'navbar-admin';
-                    if (this.role === 'company') return 'navbar-company';
-                    if (this.role === 'student') return 'navbar-student';
-                    return '';
-                }
-            },
-            methods: {
-                updateAuth() {
-                    this.token = localStorage.getItem('token');
-                    this.role = localStorage.getItem('role') || '';
-                },
-                logout() {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('role');
-                    this.token = null;
-                    this.role = '';
-                    this.$router.push('/');
-                }
-            }
-        });
+    const app = createApp({
+      data() {
+        return {
+          token: localStorage.getItem('token'),
+          role: localStorage.getItem('role') || ''
+        };
+      },
+      computed: {
+        navbarClass() {
+          if (!this.token) return 'navbar-guest';
+          if (this.role === 'admin') return 'navbar-admin';
+          if (this.role === 'company') return 'navbar-company';
+          if (this.role === 'student') return 'navbar-student';
+          return '';
+        }
+      },
+      methods: {
+        updateAuth() {
+          this.token = localStorage.getItem('token');
+          this.role = localStorage.getItem('role') || '';
+        },
+        logout() {
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          this.token = null;
+          this.role = '';
+          this.$router.push('/');
+        }
+      }
+    });
 
-        app.use(router);
-        app.mount('#app');
-        {% endraw %}
-    </script>
+    app.use(router);
+    app.mount('#app');
+    {% endraw %}
+  </script>
 </body>
 
 </html>
