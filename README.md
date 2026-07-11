@@ -6,8 +6,8 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Admin**: Manage companies, placement drives, and students, approve/reject registrations and view statistics.
 - **Company**: Create and manage placement drives, view applicants, shortlist/select/reject candidates.
 - **Student**: View eligible approved drives, apply for drives, track application statuses, edit profile.
-- **Validation** - Data validation is done in both client-side (HTML and JavaScript) and server-side (Flask).
-- **Security** - Security of the system is ensured uding JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
+- **Validation**: Data validation is done in both client-side (HTML and JavaScript) and server-side (Flask).
+- **Security**: Security of the system is ensured using JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
