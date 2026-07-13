@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from celery import Celery, Task
 from celery.schedules import crontab
 from flask import Flask, Response, jsonify, render_template, request
+from flask_caching import Cache
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
@@ -35,6 +36,7 @@ app.config["CELERY_RESULT_BACKEND"] = "redis://localhost:6379/2"
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+cache = Cache(app)
 
 SMTP_HOST = "localhost"
 SMTP_PORT = 1025
@@ -367,6 +369,13 @@ def export_student_csv_task(student_id):
     return f"CSV sent to {s.user.email}"
 
 
+def invalidate_admin_caches():
+    cache.delete("admin_dashboard")
+    cache.delete("admin_companies")
+    cache.delete("admin_drives")
+    cache.delete("admin_students")
+
+
 @app.route("/api/login", methods=["POST"])
 def login():
     d = request.get_json()
@@ -457,6 +466,7 @@ def register_company():
 
 @app.route("/api/admin/dashboard")
 @jwt_required()
+@cache.cached(timeout=60, key_prefix="admin_dashboard")
 def admin_dashboard():
     err = check_role("admin")
     if err:
@@ -479,6 +489,7 @@ def admin_dashboard():
 
 @app.route("/api/admin/companies")
 @jwt_required()
+@cache.cached(timeout=60, key_prefix="admin_companies")
 def admin_list_companies():
     err = check_role("admin")
     if err:
@@ -593,6 +604,8 @@ def admin_approve_company(company_id):
     c = Company.query.get_or_404(company_id)
     c.approved = True
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{c.user_id}")
     return jsonify(msg="Company approved")
 
 
@@ -608,6 +621,8 @@ def admin_reject_company(company_id):
     db.session.delete(c)
     db.session.delete(user)
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{c.user_id}")
     return jsonify(msg="Company Registration Rejected")
 
 
@@ -622,11 +637,14 @@ def admin_toggle_company_active(company_id):
     u = User.query.get(c.user_id)
     u.is_active = not u.is_active
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{c.user_id}")
     return jsonify(msg=f"Company {'Deactivated' if not u.is_active else 'Activated'}")
 
 
 @app.route("/api/admin/drives")
 @jwt_required()
+@cache.cached(timeout=60, key_prefix="admin_drives")
 def admin_list_drives():
     err = check_role("admin")
     if err:
@@ -673,6 +691,8 @@ def admin_approve_drive(drive_id):
         return jsonify(msg="Company not yet approved"), 400
     d.status = "approved"
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{d.company.user_id}")
     return jsonify(msg="Drive approved")
 
 
@@ -686,11 +706,14 @@ def admin_close_drive(drive_id):
     d = PlacementDrive.query.get_or_404(drive_id)
     d.status = "closed"
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{d.company.user_id}")
     return jsonify(msg="Drive closed")
 
 
 @app.route("/api/admin/students")
 @jwt_required()
+@cache.cached(timeout=60, key_prefix="admin_students")
 def admin_list_students():
     err = check_role("admin")
     if err:
@@ -801,6 +824,7 @@ def admin_toggle_student_active(student_id):
     u = User.query.get(s.user_id)
     u.is_active = not u.is_active
     db.session.commit()
+    invalidate_admin_caches()
     return jsonify(msg=f"Student {'Deactivated' if not u.is_active else 'Activated'}")
 
 
@@ -811,6 +835,11 @@ def company_dashboard():
     if err:
         return err
     u_id = get_jwt_identity()
+    cache_key = f"company_dashboard_{u_id}"
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
+
     c = Company.query.filter_by(user_id=u_id).first_or_404()
     all_d = PlacementDrive.query.filter_by(company_id=c.c_id).all()
     active_drives = []
@@ -832,12 +861,14 @@ def company_dashboard():
             closed_drives.append(dd)
         else:
             active_drives.append(dd)
-    return jsonify(
+    resp = jsonify(
         company_name=c.name,
         approved=c.approved,
         active_drives=active_drives,
         closed_drives=closed_drives,
     )
+    cache.set(cache_key, resp, timeout=60)
+    return resp
 
 
 @app.route("/api/company/drives", methods=["POST"])
@@ -882,6 +913,8 @@ def company_create_drive():
     )
     db.session.add(dr)
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{u_id}")
     return jsonify(msg="Drive Created. Pending Approval"), 201
 
 
@@ -917,6 +950,8 @@ def company_update_drive(drive_id):
         except:
             return jsonify(msg="Invalid deadline format"), 400
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{u_id}")
     return jsonify(msg="Drive updated")
 
 
@@ -933,6 +968,8 @@ def company_delete_drive(drive_id):
         return jsonify(msg="Unauthorized"), 403
     db.session.delete(d)
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{u_id}")
     return jsonify(msg="Drive deleted")
 
 
@@ -954,6 +991,8 @@ def company_toggle_drive_status(drive_id):
     else:
         return jsonify(msg="Drive status cannot be toggled"), 400
     db.session.commit()
+    invalidate_admin_caches()
+    cache.delete(f"company_dashboard_{u_id}")
     return jsonify(msg=f"Drive status changed to {d.status}")
 
 
@@ -1005,6 +1044,9 @@ def company_update_application(app_id):
         return jsonify(msg="Invalid status"), 400
     app.status = stat
     db.session.commit()
+    s = Student.query.get(app.student_id)
+    cache.delete(f"student_dashboard_{s.user_id}")
+    cache.delete(f"company_dashboard_{u_id}")
     return jsonify(msg="Status updated")
 
 
@@ -1015,8 +1057,12 @@ def student_dashboard():
     if err:
         return err
     u_id = get_jwt_identity()
-    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    cache_key = f"student_dashboard_{u_id}"
+    cached = cache.get(cache_key)
+    if cached:
+        return cached
 
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
     ad = PlacementDrive.query.filter_by(status="approved").all()
     dl = []
     for d in ad:
@@ -1051,7 +1097,9 @@ def student_dashboard():
                 "status": a.status if a else None,
             }
         )
-    return jsonify(student_name=s.name, drives=dl)
+    resp = jsonify(student_name=s.name, drives=dl)
+    cache.set(cache_key, resp, timeout=30)
+    return resp
 
 
 @app.route("/api/student/apply/<int:drive_id>", methods=["POST"])
@@ -1085,6 +1133,7 @@ def student_apply(drive_id):
     app = Application(student_id=s.s_id, drive_id=drive_id, status="applied")
     db.session.add(app)
     db.session.commit()
+    cache.delete(f"student_dashboard_{u_id}")
     return jsonify(msg="Applied successfully")
 
 
@@ -1155,6 +1204,7 @@ def student_profile():
         if "skills" in d:
             s.skills = d["skills"].strip() or None
         db.session.commit()
+        cache.delete(f"student_dashboard_{u_id}")
         return jsonify(msg="Profile Updated")
 
 
@@ -1219,6 +1269,16 @@ def student_export_csv_download():
             "Content-Disposition": f"attachment;filename=applications_{s.s_id}.csv"
         },
     )
+
+
+@app.route("/api/clear-cache", methods=["POST"])
+@jwt_required()
+def clear_all_cache():
+    err = check_role("admin")
+    if err:
+        return err
+    cache.clear()
+    return jsonify(msg="All cache cleared")
 
 
 @app.route("/")

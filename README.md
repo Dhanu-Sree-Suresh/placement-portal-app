@@ -10,6 +10,7 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Security**: Security of the system is ensured using JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
 - **Background Jobs**: Celery with Redis for daily reminders, monthly reports, and async CSV export.
 - **Direct CSV Download**: Students can download their application history as a CSV file directly.
+- **Caching**: Redis is used to cache frequent API responses to improve performance. Cache is invalidated on data changes.
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
