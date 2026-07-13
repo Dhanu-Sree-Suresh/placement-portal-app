@@ -489,7 +489,7 @@ def admin_dashboard():
 
 @app.route("/api/admin/companies")
 @jwt_required()
-@cache.cached(timeout=60, key_prefix="admin_companies")
+@cache.cached(timeout=60, key_prefix=lambda: f"admin_companies_{request.url}")
 def admin_list_companies():
     err = check_role("admin")
     if err:
@@ -644,7 +644,7 @@ def admin_toggle_company_active(company_id):
 
 @app.route("/api/admin/drives")
 @jwt_required()
-@cache.cached(timeout=60, key_prefix="admin_drives")
+@cache.cached(timeout=60, key_prefix=lambda: f"admin_drives_{request.url}")
 def admin_list_drives():
     err = check_role("admin")
     if err:
@@ -713,7 +713,7 @@ def admin_close_drive(drive_id):
 
 @app.route("/api/admin/students")
 @jwt_required()
-@cache.cached(timeout=60, key_prefix="admin_students")
+@cache.cached(timeout=60, key_prefix=lambda: f"admin_students_{request.url}")
 def admin_list_students():
     err = check_role("admin")
     if err:
@@ -1279,6 +1279,73 @@ def clear_all_cache():
         return err
     cache.clear()
     return jsonify(msg="All cache cleared")
+
+
+@app.route("/manifest.json")
+def manifest():
+    svg = """<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'>
+  <circle cx='96' cy='96' r='90' fill='#54B39A'/>
+  <g transform='translate(48,44) scale(5.5)'>
+    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-mortarboard-fill' viewBox='0 0 16 16'>
+      <path d='M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z'/>
+      <path d='M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z'/>
+    </svg>
+  </g>
+</svg>"""
+
+    import base64
+
+    icon = "data:image/svg+xml;base64," + base64.b64encode(svg.encode("utf-8")).decode(
+        "utf-8"
+    )
+
+    return jsonify(
+        {
+            "name": "Placement Portal",
+            "short_name": "PPA",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#54B39A",
+            "icons": [
+                {"src": icon, "sizes": "192x192", "type": "image/svg+xml"},
+                {
+                    "src": icon,
+                    "sizes": "512x512",
+                    "type": "image/svg+xml",
+                },
+            ],
+        }
+    )
+
+
+@app.route("/sw.js")
+def service_worker():
+    response = Response(
+        """
+const CACHE_NAME = 'placement-portal-v2';
+const urlsToCache = [
+    '/',
+    '/templates/index.html'
+];
+
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(urlsToCache))
+    );
+});
+
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => response || fetch(event.request))
+    );
+});
+    """,
+        mimetype="application/javascript",
+    )
+    return response
 
 
 @app.route("/")

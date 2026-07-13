@@ -11,6 +11,7 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Background Jobs**: Celery with Redis for daily reminders, monthly reports, and async CSV export.
 - **Direct CSV Download**: Students can download their application history as a CSV file directly.
 - **Caching**: Redis is used to cache frequent API responses to improve performance. Cache is invalidated on data changes.
+- **PWA Support**: The app includes a Web App Manifest and a service worker, making it installable on supported devices.
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
@@ -31,6 +32,20 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 | Student 2| student2@portal.com | pass123    |
 | Company 1| hr1@portal.com      | pass123    |
 | Company 2| hr2@portal.com      | pass123    |
+
+## References
+1. Flask Web Development 2nd Edition - Miguel Grinberg
+2. Learning Web Design 5th Edition - Jennifer Niederst Robbins
+3. Database System Concepts 7th Edition - Abraham Silberschatz, Henry F. Korth, S. Sudarshan
+4. Eloquent Javascript: A Modern Introduction to Programming 4th Edition - Marijn Haverbeke
+5. You Don’t Know JS: Up and Going - Kyle Simpson
+6. You Don’t Know JS: Types and Grammar - Kyle Simpson
+7. You Don’t Know JS: ES6 and Beyond - Kyle Simpson
+8. You Don’t Know JS: Async and Performance - Kyle Simpson
+9. You Don’t Know JS: this and Object Prototypes - Kyle Simpson
+10. You Don’t Know JS: Scope and Closures - Kyle Simpson
+11. The Jamstack Book: Beyond Static Sites With Javascript, APIs, and Markup - Raymond Camden, Brian Rinaldi
+12. Vue.js 3 for Beginners: Learn the essentials of Vue.js 3 and its ecosystem to build modern web applications - Simone Cuomo
 
 ## Online Resources Used
 1. https://coolors.co/ (Colour Palette)
