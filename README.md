@@ -6,15 +6,21 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Admin**: Manage companies, placement drives, and students, approve/reject registrations and view statistics.
 - **Company**: Create and manage placement drives, view applicants, shortlist/select/reject candidates.
 - **Student**: View eligible approved drives, apply for drives, track application statuses, edit profile.
-- **Validation** - Data validation is done in both client-side (HTML and JavaScript) and server-side (Flask).
-- **Security** - Security of the system is ensured uding JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
+- **Validation**: Data validation is done in both client-side (HTML and JavaScript) and server-side (Flask).
+- **Security**: Security of the system is ensured using JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
+- **Background Jobs**: Celery with Redis for daily reminders, monthly reports, and async CSV export.
+- **Direct CSV Download**: Students can download their application history as a CSV file directly.
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
 2. Activate it: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux)
 3. Install dependencies: `pip install -r requirements.txt`
-4. Run: `python app.py`
-5. Open http://localhost:5000 in your browser.
+4. Start Redis server: `redis-server`
+5. Start Celery worker and Celery Beat: `celery -A app.celery_app worker --loglevel=info --pool=solo`  `celery -A app.celery_app beat --loglevel=info`
+6. Run: `python app.py`
+7. Open http://localhost:5000 in your browser.
+8. Start MailHog: `~/go/bin/MailHog`
+9. Access MailHog UI using http://localhost:8025.
 
 ## Login Credentials
 | Role     | Email               | Password   |

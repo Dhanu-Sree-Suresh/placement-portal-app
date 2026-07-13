@@ -1,7 +1,12 @@
 import re
+import smtplib
 from datetime import datetime, timedelta
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-from flask import Flask, jsonify, render_template, request
+from celery import Celery, Task
+from celery.schedules import crontab
+from flask import Flask, Response, jsonify, render_template, request
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
@@ -30,6 +35,58 @@ app.config["CELERY_RESULT_BACKEND"] = "redis://localhost:6379/2"
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+
+SMTP_HOST = "localhost"
+SMTP_PORT = 1025
+SENDER_EMAIL = "placement@portal.com"
+SENDER_PASSWORD = ""
+
+celery_app = Celery(
+    "app",
+    broker=app.config["CELERY_BROKER_URL"],
+    backend=app.config["CELERY_RESULT_BACKEND"],
+)
+
+
+class FlaskTask(Task):
+    def __call__(self, *args, **kwargs):
+        with app.app_context():
+            return self.run(*args, **kwargs)
+
+
+celery_app.Task = FlaskTask
+
+celery_app.conf.timezone = "Asia/Dubai"
+celery_app.conf.beat_schedule = {
+    "daily-reminders": {
+        "task": "app.send_daily_reminders",
+        "schedule": crontab(hour=8, minute=0),
+    },
+    "monthly-report": {
+        "task": "app.generate_monthly_report",
+        "schedule": crontab(hour=0, minute=0, day_of_month=1),
+    },
+}
+
+
+def send_email(to, subject, body, content_type="text", attachment=None):
+    msg = MIMEMultipart()
+    msg["To"] = to
+    msg["From"] = SENDER_EMAIL
+    msg["Subject"] = subject
+    if content_type == "html":
+        msg.attach(MIMEText(body, "html"))
+    else:
+        msg.attach(MIMEText(body, "plain"))
+    if attachment:
+        fn, fc, ft = attachment
+        att = MIMEText(fc, "csv")
+        att.add_header("Content-Disposition", "attachment", filename=fn)
+        msg.attach(att)
+    s = smtplib.SMTP(host=SMTP_HOST, port=SMTP_PORT)
+    s.login(SENDER_EMAIL, SENDER_PASSWORD)
+    s.send_message(msg)
+    s.quit()
 
 
 class User(db.Model):
@@ -226,6 +283,88 @@ def check_role(role):
 
 def is_valid_email(email):
     return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+
+@celery_app.task
+def send_daily_reminders():
+    tom = datetime.now() + timedelta(days=1)
+    dr = PlacementDrive.query.filter(
+        PlacementDrive.status == "approved",
+        PlacementDrive.deadline >= datetime.now(),
+        PlacementDrive.deadline <= tom + timedelta(days=1),
+    ).all()
+    for d in dr:
+        st = Student.query.all()
+        for s in st:
+            if not Application.query.filter_by(
+                student_id=s.s_id, drive_id=d.p_id
+            ).first():
+                send_email(
+                    s.user.email,
+                    "Upcoming Placement Drive Deadline",
+                    f"Dear {s.name},\n\nThe application deadline for '{d.title}' is approaching. Kindly apply now.",
+                )
+    return "Daily reminders sent"
+
+
+@celery_app.task
+def generate_monthly_report():
+    now = datetime.now()
+    if now.month == 1:
+        lm = 12
+        y = now.year - 1
+    else:
+        lm = now.month - 1
+        y = now.year
+    s = datetime(y, lm, 1)
+    e = datetime(y, lm + 1, 1) if lm < 12 else datetime(y + 1, 1, 1)
+    dc = PlacementDrive.query.filter(
+        PlacementDrive.created_at >= s, PlacementDrive.created_at < e
+    ).count()
+    apps = Application.query.filter(
+        Application.applied_date >= s, Application.applied_date < e
+    ).count()
+    sel = Application.query.filter(
+        Application.applied_date >= s,
+        Application.applied_date < e,
+        Application.status == "selected",
+    ).count()
+    html = f"""
+    <html><body>
+    <h2>Monthly Placement Report - {s.strftime("%B %Y")}</h2>
+    <p>Drives Conducted: {dc}</p>
+    <p>Applications Received: {apps}</p>
+    <p>Students Selected: {sel}</p>
+    </body></html>
+    """
+    send_email(
+        app.config["ADMIN_EMAIL"],
+        "Monthly Placement Report",
+        html,
+        content_type="html",
+    )
+    return "Monthly report sent"
+
+
+@celery_app.task
+def export_student_csv_task(student_id):
+    s = Student.query.get(student_id)
+    if not s:
+        return "Student not found"
+    apps = Application.query.filter_by(student_id=student_id).all()
+    l = ["Student ID,Company,Drive Title,Status,Date"]
+    for a in apps:
+        d = PlacementDrive.query.get(a.drive_id)
+        c = Company.query.get(d.company_id)
+        l.append(f"{s.s_id},{c.name},{d.title},{a.status},{a.applied_date.isoformat()}")
+    csv_content = "\n".join(l)
+    send_email(
+        s.user.email,
+        "Your Application History CSV",
+        "Please find attached your placement application history.",
+        attachment=("applications.csv", csv_content, "text/csv"),
+    )
+    return f"CSV sent to {s.user.email}"
 
 
 @app.route("/api/login", methods=["POST"])
@@ -1052,7 +1191,34 @@ def student_export_csv():
         return err
     u_id = get_jwt_identity()
     s = Student.query.filter_by(user_id=u_id).first_or_404()
-    return jsonify(msg="CSV Exported (Check Email)")
+    t = export_student_csv_task.delay(s.s_id)
+    return jsonify(msg="CSV Exported. You will receive an email shortly.", task_id=t.id)
+
+
+@app.route("/api/student/export-csv-download", methods=["GET"])
+@jwt_required()
+def student_export_csv_download():
+    err = check_role("student")
+    if err:
+        return err
+    u_id = get_jwt_identity()
+    s = Student.query.filter_by(user_id=u_id).first_or_404()
+    apps = Application.query.filter_by(student_id=s.s_id).all()
+
+    l = ["Student ID,Company,Drive Title,Status,Date"]
+    for a in apps:
+        d = PlacementDrive.query.get(a.drive_id)
+        c = Company.query.get(d.company_id)
+        l.append(f"{s.s_id},{c.name},{d.title},{a.status},{a.applied_date.isoformat()}")
+    csv_content = "\n".join(l)
+
+    return Response(
+        csv_content,
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": f"attachment;filename=applications_{s.s_id}.csv"
+        },
+    )
 
 
 @app.route("/")

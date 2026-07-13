@@ -1231,7 +1231,8 @@
             </table>
           </div>
           <div class="text-end mt-2 mb-3">
-            <button class="btn btn-sm btn-accent" @click="exportCSV">Export Applications CSV</button>
+            <button class="btn btn-sm btn-accent me-1" @click="exportCSV">Export CSV (Email)</button>
+            <button class="btn btn-sm btn-accent" @click="downloadCSV">Download CSV</button>
           </div>
 
           <hr>
@@ -1347,6 +1348,23 @@
             alert('CSV export started. You will receive an email shortly.');
           } catch (e) {
             alert(e.response?.data?.msg || 'Export failed');
+          }
+        },
+        async downloadCSV() {
+          try {
+            const response = await axios.get('/api/student/export-csv-download', {
+              responseType: 'blob'
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'applications.csv');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+          } catch (e) {
+            alert(e.response?.data?.msg || 'Download failed');
           }
         }
       }
