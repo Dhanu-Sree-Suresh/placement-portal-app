@@ -8,11 +8,8 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Student**: View eligible approved drives, apply for drives, track application statuses, edit profile.
 - **Validation**: Data validation is done in both client-side (HTML and JavaScript) and server-side (Flask).
 - **Security**: Security of the system is ensured using JWT Tokens, password hashing, duplicate prevention, eligibility checks and input sanitization.
-<<<<<<< HEAD
 - **Background Jobs**: Celery with Redis for daily reminders, monthly reports, and async CSV export.
 - **Direct CSV Download**: Students can download their application history as a CSV file directly.
-=======
->>>>>>> c64443d5b7a477bc8b737f278c0e8c34c4239d7f
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
