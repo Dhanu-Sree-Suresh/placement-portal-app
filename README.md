@@ -12,6 +12,37 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 - **Direct CSV Download**: Students can download their application history as a CSV file directly.
 - **Caching**: Redis is used to cache frequent API responses to improve performance. Cache is invalidated on data changes.
 - **PWA Support**: The app includes a Web App Manifest and a service worker, making it installable on supported devices.
+- **Resume Upload & View**: Students can upload a resume, and companies/admins can view it directly from the applicant list.
+- **ATS Check**: A simple keyword‑based resume checker that compares student skills against a drive’s requirements.
+- **Ratings**: Students who have been shortlisted can rate the interview process; selected students can rate the company. Ratings are aggregated and displayed to the company without revealing the student's identity.
+
+## Libraries Used
+- **Flask**: Web framework for Python.
+- **Flask-SQLAlchemy**: ORM for database operations.
+- **Werkzeug**: Password hashing and security utilities.
+- **Flask-JWT-Extended**: JWT authentication.
+- **Flask-Caching** with **Redis** backend for caching API responses.
+- **Celery** with **Redis** as broker/backend for asynchronous tasks.
+- **Bootstrap 5**: Frontend framework for responsive UI.
+- **Vue.js 3**: Reactive frontend framework.
+- **Chart.js**: Interactive charts (used in admin analytics).
+- **SMTP**: Email sending for notifications, CSV exports, and reports.
+
+## Roles
+- **Admin**: Full system access – manage companies, placement drives, students, view analytics and reports, download CSV exports, approve/reject registrations, toggle account active/blacklist status.
+- **Company**: After admin approval, can create, edit, close/reopen placement drives, view applicants, shortlist/select/reject candidates, view ratings and reviews for their company.
+- **Student**: Can view eligible drives, apply, track applications, edit profile, upload resume, perform ATS skill checks, rate companies and interview processes, and export application history.
+
+## Database
+SQLite database (placement.db) with the following relational schema:
+- **User**: authentication data (email, hashed password, role), flags is_active and is_blacklisted.
+- **Company** : profile details (name, industry, location, website, etc.), linked to User.
+- **Student**: personal details (roll number, branch, CGPA, skills, resume), linked to User.
+- **PlacementDrive**: drive details (title, description, eligibility, status, required/preferred skills, technologies), closed_by_admin flag to prevent company reopening of admin‑closed drives.
+- **Application** : student‑drive mapping with status (applied, shortlisted, selected, rejected), package, placement date.
+- **Review**: ratings for companies (culture, compensation, career, etc.) and interview difficulty/process, linked to student and company/drive.
+All tables use foreign keys to maintain referential integrity.
+![Database Schema](Placement-Portal-App.png)
 
 ## Setup & Use
 1. Create virtual environment: `python -m venv venv`
@@ -25,13 +56,29 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 9. Access MailHog UI using http://localhost:8025.
 
 ## Login Credentials
-| Role     | Email               | Password   |
-|----------|---------------------|------------|
-| Admin    | admin@portal.com    | admin123   |
-| Student 1| student1@portal.com | pass123    |
-| Student 2| student2@portal.com | pass123    |
-| Company 1| hr1@portal.com      | pass123    |
-| Company 2| hr2@portal.com      | pass123    |
+| Role                 | Email                | Password   |
+|----------------------|----------------------|------------|
+| Admin                | admin@portal.com     | admin123   |
+| Student 1            | student1@portal.com  | pass123    |
+| Student 2            | student2@portal.com  | pass123    |
+| Student 3            | student3@portal.com  | pass123    |
+| Student 4            | student4@portal.com  | pass123    |
+| Student 5            | student5@portal.com  | pass123    |
+| Student 6            | student6@portal.com  | pass123    |
+| Student 7            | student7@portal.com  | pass123    |
+| Student 8            | student8@portal.com  | pass123    |
+| Student 9            | student9@portal.com  | pass123    |
+| Student 10           | student10@portal.com | pass123    |
+| Student 11           | student11@portal.com | pass123    |
+| Student 12           | student12@portal.com | pass123    |
+| TechNova Solutions   | hr1@portal.com       | pass123    |
+| AnalyticsHub         | hr2@portal.com       | pass123    |
+| CloudPeak Systems    | hr3@portal.com       | pass123    |
+| FinEdge Technologies | hr4@portal.com       | pass123    |
+| GreenEnergy Corp     | hr5@portal.com       | pass123    |
+| MediCare Innovations | hr6@portal.com       | pass123    |
+| EduTech Global       | hr7@portal.com       | pass123    |
+| AutoDrive Motors     | hr8@portal.com       | pass123    |
 
 ## References
 1. Flask Web Development 2nd Edition - Miguel Grinberg
@@ -57,3 +104,4 @@ A web app for managing campus placements built with Flask, Vue.js, SQLite, Redis
 7. https://vuejs.org/guide/introduction (Vue.js Documentation)
 8. https://docs.celeryq.dev/en/stable/ (Celery Documentation)
 9. https://flask-jwt-extended.readthedocs.io/en/stable/ (Flask-JWT-Extended Documentation)
+10. https://storyset.com/ (Website Illustrations)
